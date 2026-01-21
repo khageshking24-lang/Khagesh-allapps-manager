@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexa Hub | Khagesh ai-nexa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --nexa: #f59e0b; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; }
+        .app-card { transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
+        .app-card:hover { transform: translateY(-5px); background: rgba(245, 158, 11, 0.1); border-color: var(--nexa); }
+        .active-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+        .gradient-text { background: linear-gradient(135deg, #f59e0b, #ea580c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body class="p-6 max-w-md mx-auto pb-20">
+
+    <div class="flex justify-between items-center mb-10 pt-4">
+        <div>
+            <p class="text-[10px] font-black opacity-40 uppercase tracking-[4px]">Ecosystem</p>
+            <h1 class="text-3xl font-black italic">NEXA <span class="gradient-text">HUB</span></h1>
+        </div>
+        <button onclick="openSettings()" class="w-12 h-12 glass flex items-center justify-center text-amber-500">
+            <i class="fas fa-user-edit"></i>
+        </button>
+    </div>
+
+    <div class="glass p-6 mb-8 border-l-4 border-amber-500">
+        <p class="text-[10px] font-black opacity-50 uppercase mb-1">Welcome back,</p>
+        <h2 id="clientDisp" class="text-xl font-bold italic uppercase tracking-tight">Loading...</h2>
+        <div class="flex items-center gap-2 mt-2">
+            <div class="active-dot"></div>
+            <p class="text-[8px] font-bold opacity-40 uppercase">All Systems Operational</p>
+        </div>
+    </div>
+
+    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-widest mb-6 ml-2">Your Professional Suite</h3>
+    <div class="grid grid-cols-2 gap-4" id="appGrid">
+        </div>
+
+    <div id="settingsModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden p-10 flex items-center justify-center">
+        <div class="w-full space-y-6">
+            <h2 class="text-2xl font-black italic text-center">CUSTOMIZE <span class="text-amber-500">HUB</span></h2>
+            <input type="text" id="newName" placeholder="Enter Client Name" class="w-full p-4 glass outline-none text-sm text-center border-amber-500/20">
+            <button onclick="saveClient()" class="w-full bg-amber-500 text-black py-4 rounded-2xl font-black uppercase tracking-widest">Update Identity</button>
+            <button onclick="closeSettings()" class="w-full text-[10px] font-bold opacity-30 uppercase">Cancel</button>
+        </div>
+    </div>
+
+    <footer class="mt-12 text-center pb-10">
+        <p class="text-[8px] font-bold opacity-20 tracking-[10px] uppercase mb-2">Designed by Nexa AI</p>
+        <p class="text-[10px] font-black italic">magicalkhagesh888@gmail.com</p>
+    </footer>
+
+    <script>
+        const apps = [
+            { name: "Creator Studio", icon: "fa-clapperboard", color: "text-amber-500" },
+            { name: "Gold Manager", icon: "fa-coins", color: "text-yellow-400" },
+            { name: "Nexa Pay", icon: "fa-wallet", color: "text-emerald-500" },
+            { name: "Ledger Pro", icon: "fa-book", color: "text-blue-500" },
+            { name: "QR Gen", icon: "fa-qrcode", color: "text-purple-500" },
+            { name: "Nexa Beats", icon: "fa-music", color: "text-rose-500" },
+            { name: "Task Sync", icon: "fa-tasks", color: "text-cyan-500" },
+            { name: "Backup Cloud", icon: "fa-cloud", color: "text-white" }
+        ];
+
+        function init() {
+            const name = localStorage.getItem('nexa_client_name') || "Khagesh ai-nexa";
+            document.getElementById('clientDisp').innerText = name;
+            renderApps();
+        }
+
+        function renderApps() {
+            const grid = document.getElementById('appGrid');
+            grid.innerHTML = '';
+            apps.forEach(app => {
+                grid.innerHTML += `
+                    <div class="glass p-6 text-center app-card" onclick="openApp('${app.name}')">
+                        <i class="fas ${app.icon} text-2xl mb-4 ${app.color}"></i>
+                        <p class="text-[10px] font-black uppercase tracking-tighter">${app.name}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function openApp(name) {
+            alert(`Opening ${name}... Bhai, abhi ye link connected nahi hai, bas icons ready hain!`);
+        }
+
+        function openSettings() { document.getElementById('settingsModal').classList.remove('hidden'); }
+        function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
+
+        function saveClient() {
+            const name = document.getElementById('newName').value;
+            if(name) {
+                localStorage.setItem('nexa_client_name', name);
+                document.getElementById('clientDisp').innerText = name;
+                closeSettings();
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
