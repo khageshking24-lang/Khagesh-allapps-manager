@@ -8,97 +8,107 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --nexa: #f59e0b; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; }
-        .app-card { transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .app-card:hover { transform: translateY(-5px); background: rgba(245, 158, 11, 0.1); border-color: var(--nexa); }
-        .active-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
-        .gradient-text { background: linear-gradient(135deg, #f59e0b, #ea580c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 28px; }
+        .app-card { transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; overflow: hidden; }
+        .app-card:hover { transform: translateY(-8px); background: rgba(245, 158, 11, 0.1); border-color: var(--nexa); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.1); }
+        .gradient-text { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .status-pulse { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
     </style>
 </head>
-<body class="p-6 max-w-md mx-auto pb-20">
+<body class="p-6 max-w-md mx-auto pb-24">
 
     <div class="flex justify-between items-center mb-10 pt-4">
         <div>
-            <p class="text-[10px] font-black opacity-40 uppercase tracking-[4px]">Ecosystem</p>
-            <h1 class="text-3xl font-black italic">NEXA <span class="gradient-text">HUB</span></h1>
+            <p class="text-[9px] font-black opacity-30 uppercase tracking-[5px]">Ecosystem 2.0</p>
+            <h1 class="text-3xl font-black italic tracking-tighter uppercase">Nexa <span class="gradient-text">Hub</span></h1>
         </div>
-        <button onclick="openSettings()" class="w-12 h-12 glass flex items-center justify-center text-amber-500">
-            <i class="fas fa-user-edit"></i>
+        <button onclick="openConfig()" class="w-12 h-12 glass flex items-center justify-center text-amber-500 shadow-xl shadow-amber-500/5">
+            <i class="fas fa-user-plus"></i>
         </button>
     </div>
 
-    <div class="glass p-6 mb-8 border-l-4 border-amber-500">
-        <p class="text-[10px] font-black opacity-50 uppercase mb-1">Welcome back,</p>
-        <h2 id="clientDisp" class="text-xl font-bold italic uppercase tracking-tight">Loading...</h2>
-        <div class="flex items-center gap-2 mt-2">
-            <div class="active-dot"></div>
-            <p class="text-[8px] font-bold opacity-40 uppercase">All Systems Operational</p>
+    <div class="glass p-6 mb-8 border-l-4 border-amber-500 bg-gradient-to-r from-amber-500/5 to-transparent">
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="text-[9px] font-black opacity-40 uppercase mb-1 tracking-widest">Active Client Identity</p>
+                <h2 id="dispName" class="text-2xl font-black italic uppercase tracking-tight">Khagesh ai-nexa</h2>
+                <p id="dispEmail" class="text-[10px] opacity-40 mt-1 italic font-medium">magicalkhagesh888@gmail.com</p>
+            </div>
+            <div class="status-pulse"></div>
         </div>
     </div>
 
-    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-widest mb-6 ml-2">Your Professional Suite</h3>
-    <div class="grid grid-cols-2 gap-4" id="appGrid">
-        </div>
+    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-[4px] mb-6 ml-2">Deployed Solutions</h3>
+    <div class="grid grid-cols-2 gap-4" id="appGrid"></div>
 
-    <div id="settingsModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl z-50 hidden p-10 flex items-center justify-center">
+    <div id="configModal" class="fixed inset-0 bg-black/95 backdrop-blur-3xl z-50 hidden p-8 flex items-center justify-center">
         <div class="w-full space-y-6">
-            <h2 class="text-2xl font-black italic text-center">CUSTOMIZE <span class="text-amber-500">HUB</span></h2>
-            <input type="text" id="newName" placeholder="Enter Client Name" class="w-full p-4 glass outline-none text-sm text-center border-amber-500/20">
-            <button onclick="saveClient()" class="w-full bg-amber-500 text-black py-4 rounded-2xl font-black uppercase tracking-widest">Update Identity</button>
-            <button onclick="closeSettings()" class="w-full text-[10px] font-bold opacity-30 uppercase">Cancel</button>
+            <div class="text-center mb-6">
+                <i class="fas fa-shield-virus text-4xl text-amber-500 mb-4"></i>
+                <h2 class="text-2xl font-black italic tracking-widest">DEPLOY <span class="text-amber-500">CLIENT</span></h2>
+            </div>
+            <div class="space-y-3">
+                <input type="text" id="inName" placeholder="Client Full Name" class="w-full p-4 glass outline-none text-xs border border-white/5 focus:border-amber-500/50 transition-all">
+                <input type="email" id="inEmail" placeholder="Client Business Email" class="w-full p-4 glass outline-none text-xs border border-white/5 focus:border-amber-500/50 transition-all">
+                <button onclick="deployNow()" class="w-full bg-amber-500 text-black py-4 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-2xl shadow-amber-500/20 active:scale-95 transition">Authorize & Sync All Apps</button>
+            </div>
+            <button onclick="closeConfig()" class="w-full text-[9px] font-bold opacity-30 uppercase tracking-widest mt-4">Exit Terminal</button>
         </div>
     </div>
 
-    <footer class="mt-12 text-center pb-10">
-        <p class="text-[8px] font-bold opacity-20 tracking-[10px] uppercase mb-2">Designed by Nexa AI</p>
-        <p class="text-[10px] font-black italic">magicalkhagesh888@gmail.com</p>
+    <footer class="mt-12 text-center pb-10 opacity-30">
+        <p class="text-[8px] font-bold tracking-[8px] uppercase">Khagesh ai-nexa Enterprise</p>
     </footer>
 
     <script>
-        const apps = [
-            { name: "Creator Studio", icon: "fa-clapperboard", color: "text-amber-500" },
-            { name: "Gold Manager", icon: "fa-coins", color: "text-yellow-400" },
-            { name: "Nexa Pay", icon: "fa-wallet", color: "text-emerald-500" },
-            { name: "Ledger Pro", icon: "fa-book", color: "text-blue-500" },
-            { name: "QR Gen", icon: "fa-qrcode", color: "text-purple-500" },
-            { name: "Nexa Beats", icon: "fa-music", color: "text-rose-500" },
-            { name: "Task Sync", icon: "fa-tasks", color: "text-cyan-500" },
-            { name: "Backup Cloud", icon: "fa-cloud", color: "text-white" }
+        // MASTER DATABASE CONNECTED WITH YOUR VERCEL LINKS
+        const APPS = [
+            { name: "Creator Pro", icon: "fa-clapperboard", link: "https://content-manager-delta.vercel.app/", color: "text-amber-500" },
+            { name: "QR Master", icon: "fa-qrcode", link: "https://qr-code-generater-phi.vercel.app", color: "text-purple-500" },
+            { name: "Tution Mgr", icon: "fa-graduation-cap", link: "https://tution-manager-alpha.vercel.app/", color: "text-blue-500" },
+            { name: "Gold Manager", icon: "fa-coins", link: "https://gold-manager-tawny.vercel.app/", color: "text-yellow-400" },
+            { name: "Optical Khata", icon: "fa-glasses", link: "https://nexa-optical-khata.vercel.app/", color: "text-emerald-500" },
+            { name: "BMI Tracker", icon: "fa-heart-pulse", link: "https://bmi-tracker-orpin.vercel.app/", color: "text-rose-500" },
+            { name: "Digital Khata", icon: "fa-book", link: "https://my-digital-khata.vercel.app/", color: "text-cyan-500" },
+            { name: "Doc Builder", icon: "fa-user-md", link: "https://khagesh-ai-nexa-web-builder.vercel.app/", color: "text-white" }
         ];
 
         function init() {
-            const name = localStorage.getItem('nexa_client_name') || "Khagesh ai-nexa";
-            document.getElementById('clientDisp').innerText = name;
-            renderApps();
+            const name = localStorage.getItem('nexa_active_user') || "Khagesh ai-nexa";
+            const email = localStorage.getItem('nexa_active_email') || "magicalkhagesh888@gmail.com";
+            document.getElementById('dispName').innerText = name;
+            document.getElementById('dispEmail').innerText = email;
+            renderGrid();
         }
 
-        function renderApps() {
+        function renderGrid() {
             const grid = document.getElementById('appGrid');
             grid.innerHTML = '';
-            apps.forEach(app => {
+            APPS.forEach(app => {
                 grid.innerHTML += `
-                    <div class="glass p-6 text-center app-card" onclick="openApp('${app.name}')">
-                        <i class="fas ${app.icon} text-2xl mb-4 ${app.color}"></i>
+                    <div class="glass p-6 text-center app-card group" onclick="window.location.href='${app.link}'">
+                        <i class="fas ${app.icon} text-2xl mb-4 ${app.color} group-hover:scale-110 transition-transform"></i>
                         <p class="text-[10px] font-black uppercase tracking-tighter">${app.name}</p>
+                        <i class="fas fa-external-link-alt absolute top-3 right-3 text-[8px] opacity-20"></i>
                     </div>
                 `;
             });
         }
 
-        function openApp(name) {
-            alert(`Opening ${name}... Bhai, abhi ye link connected nahi hai, bas icons ready hain!`);
-        }
+        function openConfig() { document.getElementById('configModal').classList.remove('hidden'); }
+        function closeConfig() { document.getElementById('configModal').classList.add('hidden'); }
 
-        function openSettings() { document.getElementById('settingsModal').classList.remove('hidden'); }
-        function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
-
-        function saveClient() {
-            const name = document.getElementById('newName').value;
-            if(name) {
-                localStorage.setItem('nexa_client_name', name);
-                document.getElementById('clientDisp').innerText = name;
-                closeSettings();
+        function deployNow() {
+            const name = document.getElementById('inName').value;
+            const email = document.getElementById('inEmail').value;
+            if(name && email) {
+                localStorage.setItem('nexa_active_user', name);
+                localStorage.setItem('nexa_active_email', email);
+                init();
+                closeConfig();
+                alert(`🚀 Ecosystem Authorised for ${name}! Sabhi apps ab isi identity par sync hongi.`);
             }
         }
 
