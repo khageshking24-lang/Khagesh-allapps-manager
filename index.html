@@ -3,116 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexa Hub | Khagesh ai-nexa</title>
+    <title>Creator Studio | Nexa AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --nexa: #f59e0b; --bg: #050505; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; transition: 0.3s; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 28px; }
-        .app-card { transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; overflow: hidden; }
-        .app-card:hover { transform: translateY(-8px); background: rgba(245, 158, 11, 0.1); border-color: var(--nexa); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.1); }
-        .gradient-text { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .status-pulse { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        :root { --bg: #050505; --accent: #f59e0b; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; }
+        .tab-content { display: none; }
+        .tab-active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; }
+        .active-nav { color: #f59e0b !important; }
     </style>
 </head>
-<body class="p-6 max-w-md mx-auto pb-24">
+<body class="p-4 max-w-md mx-auto pb-32">
 
-    <div class="flex justify-between items-center mb-10 pt-4">
-        <div>
-            <p class="text-[9px] font-black opacity-30 uppercase tracking-[5px]">Ecosystem 2.0</p>
-            <h1 class="text-3xl font-black italic tracking-tighter uppercase">Nexa <span class="gradient-text">Hub</span></h1>
-        </div>
-        <button onclick="openConfig()" class="w-12 h-12 glass flex items-center justify-center text-amber-500 shadow-xl shadow-amber-500/5">
-            <i class="fas fa-user-plus"></i>
-        </button>
+    <div class="flex justify-between items-center mb-6 pt-4">
+        <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center font-black text-black">N</div>
+        <div id="liveTime" class="text-[10px] font-black opacity-40">00:00:00</div>
+        <div class="text-[9px] font-bold text-amber-500 uppercase tracking-widest" id="clientBranding">Nexa Client</div>
     </div>
 
-    <div class="glass p-6 mb-8 border-l-4 border-amber-500 bg-gradient-to-r from-amber-500/5 to-transparent">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-[9px] font-black opacity-40 uppercase mb-1 tracking-widest">Active Client Identity</p>
-                <h2 id="dispName" class="text-2xl font-black italic uppercase tracking-tight">Khagesh ai-nexa</h2>
-                <p id="dispEmail" class="text-[10px] opacity-40 mt-1 italic font-medium">magicalkhagesh888@gmail.com</p>
-            </div>
-            <div class="status-pulse"></div>
+    <div id="home" class="tab-content tab-active">
+        <h1 class="text-2xl font-black italic mb-6">DASHBOARD</h1>
+        <div class="card p-6 mb-6">
+            <h3 class="text-[10px] font-black uppercase mb-4 text-amber-500">QR Generator</h3>
+            <div id="qrcode" class="flex justify-center bg-white p-2 w-32 h-32 mx-auto rounded-xl mb-4"></div>
+            <input type="text" id="qrInput" oninput="generateQR()" placeholder="Paste Link" class="w-full p-3 rounded-xl bg-black/40 border border-white/5 text-xs text-center outline-none">
         </div>
-    </div>
-
-    <h3 class="text-[10px] font-black opacity-30 uppercase tracking-[4px] mb-6 ml-2">Deployed Solutions</h3>
-    <div class="grid grid-cols-2 gap-4" id="appGrid"></div>
-
-    <div id="configModal" class="fixed inset-0 bg-black/95 backdrop-blur-3xl z-50 hidden p-8 flex items-center justify-center">
-        <div class="w-full space-y-6">
-            <div class="text-center mb-6">
-                <i class="fas fa-shield-virus text-4xl text-amber-500 mb-4"></i>
-                <h2 class="text-2xl font-black italic tracking-widest">DEPLOY <span class="text-amber-500">CLIENT</span></h2>
-            </div>
-            <div class="space-y-3">
-                <input type="text" id="inName" placeholder="Client Full Name" class="w-full p-4 glass outline-none text-xs border border-white/5 focus:border-amber-500/50 transition-all">
-                <input type="email" id="inEmail" placeholder="Client Business Email" class="w-full p-4 glass outline-none text-xs border border-white/5 focus:border-amber-500/50 transition-all">
-                <button onclick="deployNow()" class="w-full bg-amber-500 text-black py-4 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-2xl shadow-amber-500/20 active:scale-95 transition">Authorize & Sync All Apps</button>
-            </div>
-            <button onclick="closeConfig()" class="w-full text-[9px] font-bold opacity-30 uppercase tracking-widest mt-4">Exit Terminal</button>
+        <div class="card p-6 border-l-4 border-amber-500">
+            <h3 class="text-[10px] font-black uppercase mb-4 text-amber-500">WhatsApp Task Sync</h3>
+            <input type="text" id="edName" placeholder="Editor Name" class="w-full p-3 rounded-xl bg-black/20 border border-white/10 text-xs mb-3">
+            <textarea id="edTask" placeholder="Work details..." class="w-full p-3 h-16 rounded-xl bg-black/20 border border-white/10 text-xs mb-3"></textarea>
+            <button onclick="sendWA()" class="w-full bg-emerald-600 py-3 rounded-xl font-black text-[10px] uppercase">Send via WhatsApp</button>
         </div>
     </div>
 
-    <footer class="mt-12 text-center pb-10 opacity-30">
-        <p class="text-[8px] font-bold tracking-[8px] uppercase">Khagesh ai-nexa Enterprise</p>
-    </footer>
+    <div id="wallet" class="tab-content">
+        <h1 class="text-2xl font-black italic mb-6">SPONSORSHIPS</h1>
+        <div class="card p-5 mb-6">
+            <input type="text" id="bName" placeholder="Brand Name" class="w-full p-3 bg-white/5 rounded-xl mb-2 text-xs">
+            <input type="number" id="bAmt" placeholder="Amount ₹" class="w-full p-3 bg-white/5 rounded-xl mb-4 text-xs">
+            <button onclick="addDeal()" class="w-full py-3 bg-amber-500 text-black font-black rounded-xl uppercase text-xs">Add Deal</button>
+        </div>
+        <div id="dealList" class="space-y-3"></div>
+    </div>
+
+    <div id="settings" class="tab-content">
+        <h1 class="text-2xl font-black italic mb-6">SYSTEM</h1>
+        <div class="card p-6 space-y-4">
+            <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20">
+                <p class="text-[8px] font-black uppercase text-amber-500">Support & Billing</p>
+                <p class="text-xs font-bold">magicalkhagesh888@gmail.com</p>
+            </div>
+            <button onclick="exportData()" class="w-full p-4 bg-white/5 rounded-2xl flex justify-between items-center">
+                <span class="text-xs font-bold uppercase">Cloud Backup</span>
+                <i class="fas fa-download text-amber-500"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] card p-5 flex justify-around items-center rounded-[35px]">
+        <button onclick="switchTab('home', this)" class="nav-btn active-nav"><i class="fas fa-home"></i></button>
+        <button onclick="switchTab('wallet', this)" class="nav-btn opacity-30"><i class="fas fa-wallet"></i></button>
+        <button onclick="switchTab('settings', this)" class="nav-btn opacity-30"><i class="fas fa-cog"></i></button>
+    </div>
 
     <script>
-        // MASTER DATABASE CONNECTED WITH YOUR VERCEL LINKS
-        const APPS = [
-            { name: "Creator Pro", icon: "fa-clapperboard", link: "https://content-manager-delta.vercel.app/", color: "text-amber-500" },
-            { name: "QR Master", icon: "fa-qrcode", link: "https://qr-code-generater-phi.vercel.app", color: "text-purple-500" },
-            { name: "Tution Mgr", icon: "fa-graduation-cap", link: "https://tution-manager-alpha.vercel.app/", color: "text-blue-500" },
-            { name: "Gold Manager", icon: "fa-coins", link: "https://gold-manager-tawny.vercel.app/", color: "text-yellow-400" },
-            { name: "Optical Khata", icon: "fa-glasses", link: "https://nexa-optical-khata.vercel.app/", color: "text-emerald-500" },
-            { name: "BMI Tracker", icon: "fa-heart-pulse", link: "https://bmi-tracker-orpin.vercel.app/", color: "text-rose-500" },
-            { name: "Digital Khata", icon: "fa-book", link: "https://my-digital-khata.vercel.app/", color: "text-cyan-500" },
-            { name: "Doc Builder", icon: "fa-user-md", link: "https://khagesh-ai-nexa-web-builder.vercel.app/", color: "text-white" }
-        ];
+        let db = JSON.parse(localStorage.getItem('nexa_creator_db')) || { deals: [] }; // Starting Amount 0
 
         function init() {
-            const name = localStorage.getItem('nexa_active_user') || "Khagesh ai-nexa";
-            const email = localStorage.getItem('nexa_active_email') || "magicalkhagesh888@gmail.com";
-            document.getElementById('dispName').innerText = name;
-            document.getElementById('dispEmail').innerText = email;
-            renderGrid();
+            const client = localStorage.getItem('nexa_active_client') || "Nexa User";
+            document.getElementById('clientBranding').innerText = client;
+            render();
+            generateQR();
         }
 
-        function renderGrid() {
-            const grid = document.getElementById('appGrid');
-            grid.innerHTML = '';
-            APPS.forEach(app => {
-                grid.innerHTML += `
-                    <div class="glass p-6 text-center app-card group" onclick="window.location.href='${app.link}'">
-                        <i class="fas ${app.icon} text-2xl mb-4 ${app.color} group-hover:scale-110 transition-transform"></i>
-                        <p class="text-[10px] font-black uppercase tracking-tighter">${app.name}</p>
-                        <i class="fas fa-external-link-alt absolute top-3 right-3 text-[8px] opacity-20"></i>
-                    </div>
-                `;
-            });
+        function switchTab(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('tab-active'));
+            document.getElementById(id).classList.add('tab-active');
+            document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active-nav'); b.classList.add('opacity-30'); });
+            btn.classList.add('active-nav'); btn.classList.remove('opacity-30');
         }
 
-        function openConfig() { document.getElementById('configModal').classList.remove('hidden'); }
-        function closeConfig() { document.getElementById('configModal').classList.add('hidden'); }
+        function generateQR() {
+            const val = document.getElementById('qrInput').value || "Nexa AI";
+            document.getElementById('qrcode').innerHTML = "";
+            new QRCode(document.getElementById('qrcode'), { text: val, width: 120, height: 120 });
+        }
 
-        function deployNow() {
-            const name = document.getElementById('inName').value;
-            const email = document.getElementById('inEmail').value;
-            if(name && email) {
-                localStorage.setItem('nexa_active_user', name);
-                localStorage.setItem('nexa_active_email', email);
-                init();
-                closeConfig();
-                alert(`🚀 Ecosystem Authorised for ${name}! Sabhi apps ab isi identity par sync hongi.`);
+        function addDeal() {
+            const name = document.getElementById('bName').value;
+            const amt = document.getElementById('bAmt').value;
+            if(name && amt) {
+                db.deals.unshift({ id: Date.now(), name, amt: parseInt(amt) });
+                save();
+                document.getElementById('bName').value = '';
+                document.getElementById('bAmt').value = '';
             }
         }
 
+        function save() {
+            localStorage.setItem('nexa_creator_db', JSON.stringify(db)); // Storage Backup
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById('dealList');
+            list.innerHTML = '';
+            db.deals.forEach(d => {
+                list.innerHTML += `
+                    <div class="card p-4 flex justify-between items-center">
+                        <div><p class="text-xs font-bold">${d.name}</p><p class="text-amber-500 text-sm">₹${d.amt}</p></div>
+                        <button onclick="deleteDeal(${d.id})" class="text-rose-500 text-xs"><i class="fas fa-trash"></i></button>
+                    </div>`;
+            });
+        }
+
+        function deleteDeal(id) { db.deals = db.deals.filter(x => x.id !== id); save(); }
+
+        function exportData() {
+            const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
+            const link = document.createElement('a');
+            link.setAttribute("href", data);
+            link.setAttribute("download", "nexa_backup.json");
+            link.click();
+        }
+
+        function sendWA() {
+            const name = document.getElementById('edName').value;
+            const task = document.getElementById('edTask').value;
+            window.open(`https://wa.me/?text=*Task for ${name}:*%0A${task}`); // WhatsApp direct message
+        }
+
+        setInterval(() => { document.getElementById('liveTime').innerText = new Date().toLocaleTimeString(); }, 1000); // Live time
         init();
     </script>
 </body>
-</html>
+    </html>
+    
