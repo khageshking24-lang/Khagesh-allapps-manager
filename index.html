@@ -7,112 +7,113 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #000; color: white; font-family: 'Inter', sans-serif; }
-        .app-card { background: linear-gradient(145deg, #0f0f0f, #050505); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: 0.3s; }
-        .app-card:active { transform: scale(0.92); filter: brightness(1.5); }
-        .status-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; }
+        body { background: #000; color: white; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .app-card:active { transform: scale(0.92); background: rgba(255,255,255,0.1); }
+        .gold-glow { box-shadow: 0 0 15px rgba(251, 191, 36, 0.1); }
     </style>
 </head>
-<body class="p-5 max-w-md mx-auto pb-24">
+<body class="p-6 max-w-md mx-auto pb-24">
 
     <div class="text-center mt-6 mb-10">
-        <h1 class="text-3xl font-black italic tracking-tighter uppercase">NEXA <span class="text-amber-500">HUB</span></h1>
+        <h1 class="text-4xl font-black italic tracking-tighter uppercase tracking-[-2px]">NEXA <span class="text-amber-500">HUB</span></h1>
         <p class="text-[8px] font-bold opacity-30 tracking-[6px] uppercase mt-2">The Digital Ecosystem</p>
     </div>
 
-    <div class="app-card p-4 mb-8 flex justify-between items-center border-b-2 border-amber-500/40">
-        <div>
-            <p id="liveDate" class="text-[9px] font-bold opacity-40 uppercase"></p>
-            <p id="liveTime" class="text-xl font-black italic text-amber-500"></p>
-        </div>
-        <div class="flex items-center gap-2">
-            <div class="status-dot animate-pulse"></div>
-            <span class="text-[9px] font-black uppercase opacity-60">Engine Live</span>
+    <div class="app-card p-5 mb-8 border-b-2 border-amber-500/50 gold-glow">
+        <div class="flex justify-between items-center">
+            <div>
+                <p id="liveTime" class="text-2xl font-black italic text-amber-500 tracking-tighter leading-none"></p>
+                <p class="text-[9px] font-bold opacity-40 uppercase mt-2">Systems Operational</p>
+            </div>
+            <i class="fas fa-bolt text-amber-500 text-xl animate-pulse"></i>
         </div>
     </div>
 
     <div class="grid grid-cols-1 gap-4">
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-amber-500">
-            <i class="fas fa-crown text-amber-500 text-xl w-8"></i>
+        <div onclick="window.location.href='https://khagesh-gold-manager.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-amber-500">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-inner">
+                <i class="fas fa-crown text-xl"></i>
+            </div>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Gold Manager Pro</p>
-                <p class="text-[9px] opacity-40 italic">Billing & WhatsApp Receipt</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Gold Manager Pro</p>
+                <p class="text-[9px] opacity-40">Billing & WhatsApp Receipt</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-blue-400">
-            <i class="fas fa-glasses text-blue-400 text-xl w-8"></i>
+        <div onclick="window.location.href='https://optical-shop-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-blue-400">
+            <div class="w-12 h-12 rounded-2xl bg-blue-400/10 flex items-center justify-center text-blue-400">
+                <i class="fas fa-glasses text-xl"></i>
+            </div>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Optical Solution</p>
-                <p class="text-[9px] opacity-40 italic">Eye Test & Frame Records</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Optical Solution</p>
+                <p class="text-[9px] opacity-40">Eye Test & Inventory</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-emerald-500">
-            <i class="fas fa-book text-emerald-500 text-xl w-8"></i>
+        <div onclick="window.location.href='https://khagesh-allapps-manager.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-emerald-500">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                <i class="fas fa-book text-xl"></i>
+            </div>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Digital Khata</p>
-                <p class="text-[9px] opacity-40 italic">Ledger & Debt Tracking</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Digital Khata</p>
+                <p class="text-[9px] opacity-40">Business Ledger v2.0</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-orange-500">
-            <i class="fas fa-user-graduate text-orange-500 text-xl w-8"></i>
+        <div onclick="window.location.href='https://tuition-management.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-orange-500">
+            <div class="w-12 h-12 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-500">
+                <i class="fas fa-user-graduate text-xl"></i>
+            </div>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Tuition Pro</p>
-                <p class="text-[9px] opacity-40 italic">Fees & Student Database</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Tuition Manager</p>
+                <p class="text-[9px] opacity-40">Fees & Student Tracking</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-violet-500">
-            <i class="fas fa-clapperboard text-violet-500 text-xl w-8"></i>
+        <div onclick="window.location.href='https://content-manager-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-violet-500">
+            <div class="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center text-violet-500">
+                <i class="fas fa-clapperboard text-xl"></i>
+            </div>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Creator Studio</p>
-                <p class="text-[9px] opacity-40 italic">Deal Log & Status Tracking</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Creator Studio</p>
+                <p class="text-[9px] opacity-40">Project Deal Logger</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-rose-500">
-            <i class="fas fa-heartbeat text-rose-500 text-xl w-8"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Health Metrics</p>
-                <p class="text-[9px] opacity-40 italic">BMI & Weight Calculator</p>
+        <div onclick="window.location.href='https://bmi-tracker-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-5 border-l-4 border-rose-500">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500">
+                <i class="fas fa-heartbeat text-xl"></i>
             </div>
-            <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
-        </div>
-
-        <div onclick="location.href='#'" class="app-card p-5 flex items-center gap-4 border-l-4 border-cyan-400">
-            <i class="fas fa-qrcode text-cyan-400 text-xl w-8"></i>
             <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">QR Generator</p>
-                <p class="text-[9px] opacity-40 italic">Instant Dynamic Codes</p>
+                <p class="text-xs font-black uppercase italic tracking-tight">Health Metrics</p>
+                <p class="text-[9px] opacity-40">Weight & BMI Analytics</p>
             </div>
             <i class="fas fa-arrow-right text-[10px] opacity-20"></i>
         </div>
 
     </div>
 
-    <div class="mt-12 p-6 text-center">
-        <div class="flex justify-center gap-10 mb-6">
-            <a href="mailto:magicalkhagesh888@gmail.com" class="text-xl text-amber-500"><i class="fas fa-envelope"></i></a>
-            <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" target="_blank" class="text-xl text-amber-500"><i class="fab fa-instagram"></i></a>
+    <div class="mt-12 text-center p-6 glass rounded-[32px] border border-white/5">
+        <p class="text-[10px] font-bold opacity-30 uppercase tracking-[3px] mb-6 italic">Support & Contact</p>
+        <div class="flex justify-center gap-10">
+            <a href="mailto:magicalkhagesh888@gmail.com" class="text-2xl text-amber-500 hover:scale-110 transition"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" target="_blank" class="text-2xl text-amber-500 hover:scale-110 transition"><i class="fab fa-instagram"></i></a>
         </div>
-        <p class="text-[8px] font-black opacity-20 tracking-[4px] uppercase">© 2026 Khagesh ai-nexa</p>
+        <p class="text-[8px] opacity-20 mt-8 font-black uppercase tracking-[2px]">© 2026 NEXA AI ECOSYSTEM</p>
     </div>
 
     <script>
         setInterval(() => {
-            const n = new Date();
-            document.getElementById('liveTime').innerText = n.toLocaleTimeString();
-            document.getElementById('liveDate').innerText = n.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+            document.getElementById('liveTime').innerText = new Date().toLocaleTimeString();
         }, 1000);
     </script>
 </body>
-        </html>
-        
+                                                                                                                                                                                                     </html>
+                                                                                                                                                                                                     
