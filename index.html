@@ -3,143 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creator Studio | Nexa AI</title>
+    <title>Nexa Hub | Khagesh ai-nexa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root { --bg: #050505; --accent: #f59e0b; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; }
-        .tab-content { display: none; }
-        .tab-active { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; }
-        .active-nav { color: #f59e0b !important; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 28px; }
+        .app-card:active { transform: scale(0.95); transition: 0.2s; }
+        .gold-text { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="p-4 max-w-md mx-auto pb-32">
+<body class="p-6 max-w-md mx-auto pb-20">
 
-    <div class="flex justify-between items-center mb-6 pt-4">
-        <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center font-black text-black">N</div>
-        <div id="liveTime" class="text-[10px] font-black opacity-40">00:00:00</div>
-        <div class="text-[9px] font-bold text-amber-500 uppercase tracking-widest" id="clientBranding">Nexa Client</div>
+    <div class="text-center mt-8 mb-12">
+        <h1 class="text-4xl font-black italic tracking-tighter uppercase">NEXA <span class="gold-text">HUB</span></h1>
+        <p class="text-[10px] font-bold opacity-30 tracking-[5px] uppercase mt-2">Software Ecosystem</p>
     </div>
 
-    <div id="home" class="tab-content tab-active">
-        <h1 class="text-2xl font-black italic mb-6">DASHBOARD</h1>
-        <div class="card p-6 mb-6">
-            <h3 class="text-[10px] font-black uppercase mb-4 text-amber-500">QR Generator</h3>
-            <div id="qrcode" class="flex justify-center bg-white p-2 w-32 h-32 mx-auto rounded-xl mb-4"></div>
-            <input type="text" id="qrInput" oninput="generateQR()" placeholder="Paste Link" class="w-full p-3 rounded-xl bg-black/40 border border-white/5 text-xs text-center outline-none">
+    <div class="glass p-5 mb-8 flex justify-between items-center border-b-2 border-amber-500/50">
+        <div>
+            <p id="liveDate" class="text-[10px] font-black opacity-40 uppercase"></p>
+            <p id="liveTime" class="text-xl font-black italic text-amber-500"></p>
         </div>
-        <div class="card p-6 border-l-4 border-amber-500">
-            <h3 class="text-[10px] font-black uppercase mb-4 text-amber-500">WhatsApp Task Sync</h3>
-            <input type="text" id="edName" placeholder="Editor Name" class="w-full p-3 rounded-xl bg-black/20 border border-white/10 text-xs mb-3">
-            <textarea id="edTask" placeholder="Work details..." class="w-full p-3 h-16 rounded-xl bg-black/20 border border-white/10 text-xs mb-3"></textarea>
-            <button onclick="sendWA()" class="w-full bg-emerald-600 py-3 rounded-xl font-black text-[10px] uppercase">Send via WhatsApp</button>
+        <div class="text-right">
+            <span class="bg-emerald-500/10 text-emerald-500 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Systems Online</span>
         </div>
     </div>
 
-    <div id="wallet" class="tab-content">
-        <h1 class="text-2xl font-black italic mb-6">SPONSORSHIPS</h1>
-        <div class="card p-5 mb-6">
-            <input type="text" id="bName" placeholder="Brand Name" class="w-full p-3 bg-white/5 rounded-xl mb-2 text-xs">
-            <input type="number" id="bAmt" placeholder="Amount ₹" class="w-full p-3 bg-white/5 rounded-xl mb-4 text-xs">
-            <button onclick="addDeal()" class="w-full py-3 bg-amber-500 text-black font-black rounded-xl uppercase text-xs">Add Deal</button>
+    <h3 class="text-[10px] font-black opacity-40 uppercase mb-4 px-2">Your Professional Suite</h3>
+    <div class="grid grid-cols-2 gap-4 mb-10">
+        
+        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-amber-500">
+            <i class="fas fa-crown text-2xl text-amber-500 mb-3"></i>
+            <p class="text-[10px] font-black uppercase italic">Gold Pro</p>
+            <p class="text-[8px] opacity-30 mt-1">Jewelry Billing</p>
         </div>
-        <div id="dealList" class="space-y-3"></div>
+
+        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-emerald-500">
+            <i class="fas fa-book text-2xl text-emerald-500 mb-3"></i>
+            <p class="text-[10px] font-black uppercase italic">Digital Khata</p>
+            <p class="text-[8px] opacity-30 mt-1">Business Ledger</p>
+        </div>
+
+        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-violet-500">
+            <i class="fas fa-video text-2xl text-violet-500 mb-3"></i>
+            <p class="text-[10px] font-black uppercase italic">Creator Studio</p>
+            <p class="text-[8px] opacity-30 mt-1">Content Manager</p>
+        </div>
+
+        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-blue-500">
+            <i class="fas fa-qrcode text-2xl text-blue-500 mb-3"></i>
+            <p class="text-[10px] font-black uppercase italic">Nexa QR</p>
+            <p class="text-[8px] opacity-30 mt-1">Instant Codes</p>
+        </div>
+
     </div>
 
-    <div id="settings" class="tab-content">
-        <h1 class="text-2xl font-black italic mb-6">SYSTEM</h1>
-        <div class="card p-6 space-y-4">
-            <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20">
-                <p class="text-[8px] font-black uppercase text-amber-500">Support & Billing</p>
-                <p class="text-xs font-bold">magicalkhagesh888@gmail.com</p>
-            </div>
-            <button onclick="exportData()" class="w-full p-4 bg-white/5 rounded-2xl flex justify-between items-center">
-                <span class="text-xs font-bold uppercase">Cloud Backup</span>
-                <i class="fas fa-download text-amber-500"></i>
-            </button>
+    <div class="glass p-6 text-center">
+        <p class="text-[10px] font-black opacity-40 uppercase mb-4 italic">Developed by Khagesh ai-nexa</p>
+        <div class="flex justify-center gap-8">
+            <a href="mailto:magicalkhagesh888@gmail.com" class="text-2xl hover:text-amber-500 transition"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" target="_blank" class="text-2xl hover:text-amber-500 transition"><i class="fab fa-instagram"></i></a>
         </div>
-    </div>
-
-    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] card p-5 flex justify-around items-center rounded-[35px]">
-        <button onclick="switchTab('home', this)" class="nav-btn active-nav"><i class="fas fa-home"></i></button>
-        <button onclick="switchTab('wallet', this)" class="nav-btn opacity-30"><i class="fas fa-wallet"></i></button>
-        <button onclick="switchTab('settings', this)" class="nav-btn opacity-30"><i class="fas fa-cog"></i></button>
     </div>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('nexa_creator_db')) || { deals: [] }; // Starting Amount 0
-
-        function init() {
-            const client = localStorage.getItem('nexa_active_client') || "Nexa User";
-            document.getElementById('clientBranding').innerText = client;
-            render();
-            generateQR();
-        }
-
-        function switchTab(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('tab-active'));
-            document.getElementById(id).classList.add('tab-active');
-            document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active-nav'); b.classList.add('opacity-30'); });
-            btn.classList.add('active-nav'); btn.classList.remove('opacity-30');
-        }
-
-        function generateQR() {
-            const val = document.getElementById('qrInput').value || "Nexa AI";
-            document.getElementById('qrcode').innerHTML = "";
-            new QRCode(document.getElementById('qrcode'), { text: val, width: 120, height: 120 });
-        }
-
-        function addDeal() {
-            const name = document.getElementById('bName').value;
-            const amt = document.getElementById('bAmt').value;
-            if(name && amt) {
-                db.deals.unshift({ id: Date.now(), name, amt: parseInt(amt) });
-                save();
-                document.getElementById('bName').value = '';
-                document.getElementById('bAmt').value = '';
-            }
-        }
-
-        function save() {
-            localStorage.setItem('nexa_creator_db', JSON.stringify(db)); // Storage Backup
-            render();
-        }
-
-        function render() {
-            const list = document.getElementById('dealList');
-            list.innerHTML = '';
-            db.deals.forEach(d => {
-                list.innerHTML += `
-                    <div class="card p-4 flex justify-between items-center">
-                        <div><p class="text-xs font-bold">${d.name}</p><p class="text-amber-500 text-sm">₹${d.amt}</p></div>
-                        <button onclick="deleteDeal(${d.id})" class="text-rose-500 text-xs"><i class="fas fa-trash"></i></button>
-                    </div>`;
-            });
-        }
-
-        function deleteDeal(id) { db.deals = db.deals.filter(x => x.id !== id); save(); }
-
-        function exportData() {
-            const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-            const link = document.createElement('a');
-            link.setAttribute("href", data);
-            link.setAttribute("download", "nexa_backup.json");
-            link.click();
-        }
-
-        function sendWA() {
-            const name = document.getElementById('edName').value;
-            const task = document.getElementById('edTask').value;
-            window.open(`https://wa.me/?text=*Task for ${name}:*%0A${task}`); // WhatsApp direct message
-        }
-
-        setInterval(() => { document.getElementById('liveTime').innerText = new Date().toLocaleTimeString(); }, 1000); // Live time
-        init();
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('liveTime').innerText = now.toLocaleTimeString();
+            document.getElementById('liveDate').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }, 1000);
     </script>
 </body>
-    </html>
-    
+</html>
