@@ -8,19 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background: #000; color: white; font-family: 'Inter', sans-serif; }
-        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; cursor: pointer; transition: 0.3s; }
-        .app-card:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: 0.3s; cursor: pointer; }
+        .app-card:active { transform: scale(0.95); background: rgba(255,255,255,0.08); }
     </style>
 </head>
 <body class="p-6 max-w-md mx-auto">
 
     <div class="text-center mt-6 mb-10">
         <h1 class="text-3xl font-black italic uppercase">NEXA <span class="text-amber-500">HUB</span></h1>
-        <p class="text-[8px] font-bold opacity-30 tracking-[5px] mt-2 uppercase">CEO: Khagesh ai-nexa</p>
+        <p class="text-[9px] font-bold opacity-30 tracking-[4px] mt-2 uppercase">CEO: Khagesh ai-nexa</p>
     </div>
 
-    <div class="grid grid-cols-1 gap-4">
-        <div onclick="window.open('https://khagesh-gold-manager.vercel.app', '_self')" class="app-card p-5 flex items-center gap-4 border-l-4 border-amber-500">
+    <div class="space-y-4">
+        <div onclick="window.location.href='https://khagesh-gold-manager.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-amber-500">
             <i class="fas fa-crown text-amber-500 text-xl"></i>
             <div class="flex-1">
                 <p class="text-xs font-black uppercase italic">Gold Manager Pro</p>
@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div onclick="window.open('https://khagesh-allapps-manager.vercel.app', '_self')" class="app-card p-5 flex items-center gap-4 border-l-4 border-emerald-500">
+        <div onclick="window.location.href='https://khagesh-allapps-manager.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-emerald-500">
             <i class="fas fa-book text-emerald-500 text-xl"></i>
             <div class="flex-1">
                 <p class="text-xs font-black uppercase italic">Digital Khata</p>
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <div onclick="window.open('https://optical-shop-khagesh.vercel.app', '_self')" class="app-card p-5 flex items-center gap-4 border-l-4 border-blue-400">
+        <div onclick="window.location.href='https://optical-shop-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-blue-400">
             <i class="fas fa-glasses text-blue-400 text-xl"></i>
             <div class="flex-1">
                 <p class="text-xs font-black uppercase italic">Optical Solution</p>
@@ -44,21 +44,29 @@
             </div>
         </div>
 
-        <div onclick="window.open('https://content-manager-khagesh.vercel.app', '_self')" class="app-card p-5 flex items-center gap-4 border-l-4 border-violet-500">
-            <i class="fas fa-video text-violet-500 text-xl"></i>
+        <div onclick="window.location.href='https://content-manager-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-violet-500">
+            <i class="fas fa-clapperboard text-violet-500 text-xl"></i>
             <div class="flex-1">
                 <p class="text-xs font-black uppercase italic">Creator Studio</p>
                 <p class="text-[9px] opacity-40">Project Tracker</p>
             </div>
         </div>
+
+        <div onclick="window.location.href='https://bmi-tracker-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-rose-500">
+            <i class="fas fa-heartbeat text-rose-500 text-xl"></i>
+            <div class="flex-1">
+                <p class="text-xs font-black uppercase italic">BMI Tracker</p>
+                <p class="text-[9px] opacity-40">Health Analytics</p>
+            </div>
+        </div>
     </div>
 
-    <div class="mt-12 text-center border-t border-white/5 pt-8">
-        <div class="flex justify-center gap-10 mb-4">
+    <div class="mt-12 text-center border-t border-white/5 pt-8 pb-10">
+        <div class="flex justify-center gap-10 mb-5">
             <a href="mailto:magicalkhagesh888@gmail.com" class="text-amber-500 text-2xl"><i class="fas fa-envelope"></i></a>
             <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" class="text-amber-500 text-2xl"><i class="fab fa-instagram"></i></a>
         </div>
-        <p class="text-[8px] opacity-20 uppercase font-bold">© 2026 KHAGESH AI-NEXA</p>
+        <p class="text-[8px] opacity-20 uppercase font-bold tracking-widest">© 2026 KHAGESH AI-NEXA</p>
     </div>
 
 </body>
