@@ -3,75 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexa Hub | Khagesh ai-nexa</title>
+    <title>Nexa Hub | Master Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 28px; }
-        .app-card:active { transform: scale(0.95); transition: 0.2s; }
-        .gold-text { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; }
+        .app-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .app-btn:active { transform: scale(0.9); }
+        .gold-grad { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
-<body class="p-6 max-w-md mx-auto pb-20">
+<body class="p-6 max-w-md mx-auto pb-24">
 
-    <div class="text-center mt-8 mb-12">
-        <h1 class="text-4xl font-black italic tracking-tighter uppercase">NEXA <span class="gold-text">HUB</span></h1>
-        <p class="text-[10px] font-bold opacity-30 tracking-[5px] uppercase mt-2">Software Ecosystem</p>
+    <div class="text-center mt-6 mb-10">
+        <h1 class="text-3xl font-black italic tracking-tighter uppercase">NEXA <span class="gold-grad">HUB</span></h1>
+        <p class="text-[9px] font-bold opacity-30 tracking-[4px] uppercase mt-1">Unified App Ecosystem</p>
     </div>
 
-    <div class="glass p-5 mb-8 flex justify-between items-center border-b-2 border-amber-500/50">
-        <div>
-            <p id="liveDate" class="text-[10px] font-black opacity-40 uppercase"></p>
-            <p id="liveTime" class="text-xl font-black italic text-amber-500"></p>
-        </div>
-        <div class="text-right">
-            <span class="bg-emerald-500/10 text-emerald-500 text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Systems Online</span>
+    <div class="glass p-5 mb-8 border-b-2 border-amber-500/30">
+        <div class="flex justify-between items-center">
+            <div>
+                <p id="liveTime" class="text-2xl font-black italic text-amber-500 tracking-tighter"></p>
+                <p id="liveDate" class="text-[9px] font-bold opacity-40 uppercase"></p>
+            </div>
+            <div class="text-right">
+                <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse ml-auto mb-1"></div>
+                <p class="text-[8px] font-black opacity-40 uppercase">System Active</p>
+            </div>
         </div>
     </div>
 
-    <h3 class="text-[10px] font-black opacity-40 uppercase mb-4 px-2">Your Professional Suite</h3>
-    <div class="grid grid-cols-2 gap-4 mb-10">
+    <div class="grid grid-cols-1 gap-4 mb-10">
         
-        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-amber-500">
-            <i class="fas fa-crown text-2xl text-amber-500 mb-3"></i>
-            <p class="text-[10px] font-black uppercase italic">Gold Pro</p>
-            <p class="text-[8px] opacity-30 mt-1">Jewelry Billing</p>
+        <div onclick="openApp('Gold Manager')" class="glass p-5 flex items-center gap-5 app-btn cursor-pointer border-l-4 border-amber-500 hover:bg-white/5">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-lg shadow-amber-500/20">
+                <i class="fas fa-crown text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-black uppercase italic tracking-tight">Gold Manager Pro</p>
+                <p class="text-[9px] opacity-40">Jewelry Billing & WhatsApp Receipt</p>
+            </div>
+            <i class="fas fa-chevron-right text-[10px] opacity-20"></i>
         </div>
 
-        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-emerald-500">
-            <i class="fas fa-book text-2xl text-emerald-500 mb-3"></i>
-            <p class="text-[10px] font-black uppercase italic">Digital Khata</p>
-            <p class="text-[8px] opacity-30 mt-1">Business Ledger</p>
+        <div onclick="openApp('Digital Khata')" class="glass p-5 flex items-center gap-5 app-btn cursor-pointer border-l-4 border-emerald-500 hover:bg-white/5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shadow-lg shadow-emerald-500/20">
+                <i class="fas fa-book text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-black uppercase italic tracking-tight">Digital Khata</p>
+                <p class="text-[9px] opacity-40">Business Ledger & Records</p>
+            </div>
+            <i class="fas fa-chevron-right text-[10px] opacity-20"></i>
         </div>
 
-        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-violet-500">
-            <i class="fas fa-video text-2xl text-violet-500 mb-3"></i>
-            <p class="text-[10px] font-black uppercase italic">Creator Studio</p>
-            <p class="text-[8px] opacity-30 mt-1">Content Manager</p>
+        <div onclick="openApp('Content Manager')" class="glass p-5 flex items-center gap-5 app-btn cursor-pointer border-l-4 border-violet-500 hover:bg-white/5">
+            <div class="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center text-violet-500 shadow-lg shadow-violet-500/20">
+                <i class="fas fa-video text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-black uppercase italic tracking-tight">Creator Studio</p>
+                <p class="text-[9px] opacity-40">Project Tracker & Income</p>
+            </div>
+            <i class="fas fa-chevron-right text-[10px] opacity-20"></i>
         </div>
 
-        <div class="glass p-6 app-card text-center cursor-pointer border-t-4 border-blue-500">
-            <i class="fas fa-qrcode text-2xl text-blue-500 mb-3"></i>
-            <p class="text-[10px] font-black uppercase italic">Nexa QR</p>
-            <p class="text-[8px] opacity-30 mt-1">Instant Codes</p>
+        <div onclick="openApp('QR Generator')" class="glass p-5 flex items-center gap-5 app-btn cursor-pointer border-l-4 border-blue-500 hover:bg-white/5">
+            <div class="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500 shadow-lg shadow-blue-500/20">
+                <i class="fas fa-qrcode text-xl"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-xs font-black uppercase italic tracking-tight">Nexa QR Gen</p>
+                <p class="text-[9px] opacity-40">Dynamic QR Code Creation</p>
+            </div>
+            <i class="fas fa-chevron-right text-[10px] opacity-20"></i>
         </div>
 
     </div>
 
-    <div class="glass p-6 text-center">
-        <p class="text-[10px] font-black opacity-40 uppercase mb-4 italic">Developed by Khagesh ai-nexa</p>
-        <div class="flex justify-center gap-8">
+    <div class="glass p-6 text-center border-t-2 border-white/5">
+        <p class="text-[9px] font-black opacity-30 uppercase tracking-[3px] mb-4 italic text-amber-500">Contact Developer</p>
+        <div class="flex justify-center gap-10">
             <a href="mailto:magicalkhagesh888@gmail.com" class="text-2xl hover:text-amber-500 transition"><i class="fas fa-envelope"></i></a>
             <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" target="_blank" class="text-2xl hover:text-amber-500 transition"><i class="fab fa-instagram"></i></a>
         </div>
+        <p class="text-[8px] opacity-20 mt-6 uppercase font-bold tracking-widest">© 2026 Khagesh ai-nexa</p>
     </div>
 
     <script>
+        // Function to simulate opening apps
+        function openApp(appName) {
+            alert("Opening " + appName + "...\n(Bhai, jaise hi aap inke individual codes ko link karenge, ye turant open ho jayengi!)");
+        }
+
+        // Clock Logic
         setInterval(() => {
             const now = new Date();
-            document.getElementById('liveTime').innerText = now.toLocaleTimeString();
-            document.getElementById('liveDate').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('liveTime').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            document.getElementById('liveDate').innerText = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
         }, 1000);
     </script>
 </body>
