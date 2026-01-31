@@ -1,73 +1,263 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexa Hub | Khagesh ai-nexa</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Nexa ERP V82 | Premium Build</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <style>
-        body { background: #000; color: white; font-family: 'Inter', sans-serif; }
-        .app-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; transition: 0.3s; cursor: pointer; }
-        .app-card:active { transform: scale(0.95); background: rgba(255,255,255,0.08); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #0b0e14; color: #fff; }
+        .nexa-glass { background: rgba(17,24,39,0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; }
+        .tab-content { display: none; }
+        .active-tab { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        input { background: #1a1f29 !important; border: 1px solid #334155 !important; color: #fff !important; border-radius: 12px !important; padding: 12px !important; outline: none; width: 100%; }
+        .revenue-card { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
     </style>
 </head>
-<body class="p-6 max-w-md mx-auto">
+<body>
 
-    <div class="text-center mt-6 mb-10">
-        <h1 class="text-3xl font-black italic uppercase">NEXA <span class="text-amber-500">HUB</span></h1>
-        <p class="text-[9px] font-bold opacity-30 tracking-[4px] mt-2 uppercase">CEO: Khagesh ai-nexa</p>
+<div id="securityWall" class="fixed inset-0 z-[10000] bg-[#0b0e14] flex items-center justify-center p-6 text-center">
+    <div class="nexa-glass p-8 w-full max-w-sm border-t-4 border-indigo-600">
+        <h2 class="text-3xl font-black text-indigo-500 italic mb-2">NEXA ERP</h2>
+        <div class="mb-6"><p id="daysLeft" class="text-5xl font-black">7</p><p class="text-[10px] text-slate-500 uppercase font-bold mt-2">Trial Days Left</p></div>
+        <input type="password" id="licenseKey" placeholder="Permanent Key" class="text-center font-bold mb-4">
+        <button onclick="activateApp()" class="w-full bg-indigo-600 py-4 rounded-xl font-black uppercase text-xs">Activate</button>
+        <button id="trialBtn" onclick="unlockApp()" class="w-full mt-4 text-slate-500 font-bold text-[10px] uppercase underline">Skip to Trial</button>
+    </div>
+</div>
+
+<div id="appBody" style="display:none" class="p-4 max-w-lg mx-auto pb-36">
+    <header class="flex justify-between items-center py-6">
+        <div><h1 class="text-2xl font-black text-indigo-500 italic uppercase">Nexa ERP</h1><p class="text-[9px] text-slate-500 font-extrabold uppercase mt-1">Powered by Khagesh ai-nexa</p></div>
+        <div class="flex gap-2">
+            <button onclick="exportToCSV()" class="w-8 h-8 nexa-glass text-amber-400 flex items-center justify-center text-xs"><i class="fas fa-file-export"></i></button>
+            <label class="w-8 h-8 nexa-glass text-blue-400 flex items-center justify-center text-xs cursor-pointer"><i class="fas fa-file-import"></i><input type="file" onchange="importCSV(event)" class="hidden" accept=".csv"></label>
+            <button onclick="downloadBackup()" class="w-8 h-8 nexa-glass text-emerald-400 flex items-center justify-center text-xs"><i class="fas fa-database"></i></button>
+            <button onclick="hardResetSystem()" class="w-8 h-8 nexa-glass text-red-500 flex items-center justify-center text-xs"><i class="fas fa-trash-alt"></i></button>
+        </div>
+    </header>
+
+    <div id="tab-dash" class="tab-content active-tab space-y-4">
+        <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="nexa-glass p-5"><h2 id="dashCount" class="text-3xl font-black text-indigo-500">0</h2><p class="text-[8px] text-slate-500 font-black uppercase">Students</p></div>
+            <div class="nexa-glass p-5 revenue-card text-white"><h2 id="dashRev" class="text-2xl font-black text-white">₹0</h2><p class="text-[8px] text-white/80 font-black uppercase">Revenue</p></div>
+        </div>
+        <div class="relative"><i class="fas fa-search absolute left-4 top-4 text-slate-500 text-xs"></i><input type="text" id="dashSearch" onkeyup="renderDash()" placeholder="Search Name, Batch, Class..." class="pl-10 text-xs"></div>
+        <div id="quickList" class="space-y-2 max-h-96 overflow-y-auto"></div>
     </div>
 
-    <div class="space-y-4">
-        <div onclick="window.location.href='https://khagesh-gold-manager.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-amber-500">
-            <i class="fas fa-crown text-amber-500 text-xl"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Gold Manager Pro</p>
-                <p class="text-[9px] opacity-40">Direct Launch Active</p>
-            </div>
-        </div>
-
-        <div onclick="window.location.href='https://khagesh-allapps-manager.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-emerald-500">
-            <i class="fas fa-book text-emerald-500 text-xl"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Digital Khata</p>
-                <p class="text-[9px] opacity-40">Business Ledger</p>
-            </div>
-        </div>
-
-        <div onclick="window.location.href='https://optical-shop-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-blue-400">
-            <i class="fas fa-glasses text-blue-400 text-xl"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Optical Solution</p>
-                <p class="text-[9px] opacity-40">Eye Clinic App</p>
-            </div>
-        </div>
-
-        <div onclick="window.location.href='https://content-manager-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-violet-500">
-            <i class="fas fa-clapperboard text-violet-500 text-xl"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">Creator Studio</p>
-                <p class="text-[9px] opacity-40">Project Tracker</p>
-            </div>
-        </div>
-
-        <div onclick="window.location.href='https://bmi-tracker-khagesh.vercel.app'" class="app-card p-5 flex items-center gap-4 border-l-4 border-rose-500">
-            <i class="fas fa-heartbeat text-rose-500 text-xl"></i>
-            <div class="flex-1">
-                <p class="text-xs font-black uppercase italic">BMI Tracker</p>
-                <p class="text-[9px] opacity-40">Health Analytics</p>
-            </div>
+    <div id="tab-students" class="tab-content space-y-4">
+        <div class="nexa-glass p-6 space-y-3">
+            <h3 class="text-xs font-black text-indigo-400 uppercase italic">New Admission</h3>
+            <form id="studentForm" onsubmit="event.preventDefault(); addStudent();">
+                <input type="text" id="sName" placeholder="Full Name" required class="mb-2">
+                <div class="grid grid-cols-2 gap-2 mb-2"><input type="text" id="sBatch" placeholder="Batch Name" required><input type="text" id="sClass" placeholder="Subject/Class" required></div>
+                <div class="grid grid-cols-2 gap-2 mb-2"><input type="number" id="sFee" placeholder="Fee Amount" required><input type="number" id="sPhone" placeholder="WhatsApp Number" required></div>
+                <input type="date" id="sJoinDate" required class="mb-4">
+                <button type="submit" class="w-full bg-indigo-600 py-4 rounded-xl font-black uppercase text-xs italic">Confirm Save</button>
+            </form>
         </div>
     </div>
 
-    <div class="mt-12 text-center border-t border-white/5 pt-8 pb-10">
-        <div class="flex justify-center gap-10 mb-5">
-            <a href="mailto:magicalkhagesh888@gmail.com" class="text-amber-500 text-2xl"><i class="fas fa-envelope"></i></a>
-            <a href="https://www.instagram.com/khagesh_ai_nexa?igsh=a2tjMGRpMWRkeWtx" class="text-amber-500 text-2xl"><i class="fab fa-instagram"></i></a>
+    <div id="tab-attendance" class="tab-content space-y-4">
+        <div class="nexa-glass p-5">
+            <input type="date" id="attDate" onchange="loadAttendanceForDate()" class="mb-3">
+            <div class="relative mb-3"><i class="fas fa-filter absolute left-4 top-4 text-slate-500 text-xs"></i><input type="text" id="attSearch" onkeyup="renderAttendanceList()" placeholder="Filter students..." class="pl-10 text-xs"></div>
+            <div id="attList" class="space-y-2 max-h-64 overflow-y-auto mb-4"></div>
+            <button onclick="saveAttendance()" class="w-full bg-indigo-600 py-4 rounded-xl font-black uppercase text-xs">Lock Attendance</button>
         </div>
-        <p class="text-[8px] opacity-20 uppercase font-bold tracking-widest">© 2026 KHAGESH AI-NEXA</p>
+        <div class="nexa-glass p-5 text-center">
+            <p class="text-[10px] font-bold text-slate-500 mb-3">EXPORT SHEET</p>
+            <div class="grid grid-cols-2 gap-2 mb-3"><input type="date" id="repStart"><input type="date" id="repEnd"></div>
+            <button onclick="downloadAttendanceReport()" class="w-full bg-slate-800 text-indigo-400 py-3 rounded-xl font-black uppercase text-[10px]">Download PDF</button>
+        </div>
     </div>
 
+    <div id="tab-fees" class="tab-content space-y-4">
+        <div class="nexa-glass p-5">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-xs font-black text-indigo-400 uppercase">Billing Desk</h3><button onclick="sendBulkReminders()" class="bg-green-600 px-4 py-2 rounded-lg text-[9px] font-black uppercase">WhatsApp All</button></div>
+            <div class="relative mb-4"><i class="fas fa-search-dollar absolute left-4 top-4 text-slate-500 text-xs"></i><input type="text" id="feeSearch" onkeyup="renderFeeList()" placeholder="Search Billing..." class="pl-10 text-xs"></div>
+            <div id="feeList" class="space-y-2 max-h-[400px] overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] nexa-glass p-2 flex justify-around shadow-2xl z-50">
+        <button onclick="switchTab('dash')" class="p-4 text-slate-400"><i class="fas fa-home"></i></button>
+        <button onclick="switchTab('students')" class="p-4 text-slate-400"><i class="fas fa-user-plus"></i></button>
+        <button onclick="switchTab('attendance')" class="p-4 text-slate-400"><i class="fas fa-check-double"></i></button>
+        <button onclick="switchTab('fees')" class="p-4 text-slate-400"><i class="fas fa-receipt"></i></button>
+    </nav>
+</div>
+
+<script>
+    const P_KEY = "Permanentkey63793119";
+    let db, students = [], attendanceHistory = {}, currentAttState = {};
+
+    const request = indexedDB.open("NexaERPV82_Final", 1);
+    request.onupgradeneeded = e => {
+        db = e.target.result;
+        db.createObjectStore("students", { keyPath: "id" });
+        db.createObjectStore("attendance", { keyPath: "date" });
+    };
+    request.onsuccess = e => { db = e.target.result; loadData(); initSecurity(); };
+
+    function loadData() {
+        const tx = db.transaction(["students", "attendance"], "readonly");
+        tx.objectStore("students").getAll().onsuccess = e => { students = e.target.result; renderAll(); };
+        tx.objectStore("attendance").getAll().onsuccess = e => { e.target.result.forEach(row => attendanceHistory[row.date] = row.data); loadAttendanceForDate(); };
+    }
+
+    function getFiltered(term) {
+        const s = term.toLowerCase();
+        return students.filter(x => x.name.toLowerCase().includes(s) || x.batch.toLowerCase().includes(s) || x.cls.toLowerCase().includes(s));
+    }
+
+    function renderDash() {
+        const filt = getFiltered(document.getElementById("dashSearch").value);
+        document.getElementById("quickList").innerHTML = filt.map(s => `<div class="nexa-glass p-4 flex justify-between items-center mb-2"><div><p class="font-bold text-sm text-indigo-400">${s.name}</p><p class="text-[9px] text-slate-500 uppercase">${s.batch} | ${s.cls}</p></div><div class="flex gap-4"><a href="tel:${s.phone}" class="text-blue-400"><i class="fas fa-phone"></i></a><button onclick="deleteStudent(${s.id})" class="text-red-900 opacity-20"><i class="fas fa-trash"></i></button></div></div>`).join("");
+    }
+
+    function renderFeeList() {
+        const filt = getFiltered(document.getElementById("feeSearch").value);
+        document.getElementById("feeList").innerHTML = filt.map(s => `<div class="nexa-glass p-4 flex justify-between items-center mb-2"><div class="flex items-center gap-3"><input type="checkbox" class="fee-check w-5 h-5 accent-indigo-500" data-id="${s.id}"><p class="text-xs font-bold">${s.name} <span class="text-[9px] text-slate-500 italic">(${s.batch})</span></p></div><div class="flex gap-3"><button onclick='generatePremiumReceipt(${JSON.stringify(s)})' class="text-indigo-400"><i class="fas fa-file-invoice text-xl"></i></button></div></div>`).join("");
+    }
+
+    function renderAttendanceList() {
+        const filt = getFiltered(document.getElementById("attSearch").value);
+        document.getElementById("attList").innerHTML = filt.map(s => `<div class="flex justify-between p-4 bg-white/5 rounded-xl mb-1"><span class="text-sm font-bold text-indigo-400">${s.name} <span class="text-[9px] text-slate-500">(${s.batch})</span></span><input type="checkbox" onchange="currentAttState[${s.id}]=this.checked" ${currentAttState[s.id] ? "checked" : ""} class="w-6 h-6 accent-indigo-500"></div>`).join("");
+    }
+
+    function renderAll() {
+        let rev = 0; students.forEach(s => rev += Number(s.fee));
+        document.getElementById("dashRev").innerText = `₹${rev}`;
+        document.getElementById("dashCount").innerText = students.length;
+        renderDash(); renderFeeList();
+    }
+
+    // PREMIUM RECEIPT GENERATOR
+    function generatePremiumReceipt(s) {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Design Elements
+        doc.setFillColor(99, 102, 241); doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFontSize(26); doc.text("OFFICIAL INVOICE", 105, 20, {align:"center"});
+        doc.setFontSize(10); doc.text("Nexa AI - Digital Solutions", 105, 30, {align:"center"});
+        
+        // Body
+        doc.setTextColor(0,0,0); doc.setFontSize(12); doc.text("Receipt No: " + Date.now().toString().slice(-6), 14, 50);
+        doc.text("Date: " + new Date().toLocaleDateString(), 160, 50);
+        
+        doc.autoTable({ startY: 60, head: [['Description', 'Details']], body: [['Student Name', s.name], ['Batch Assigned', s.batch], ['Class/Subject', s.cls], ['Payment Mode', 'Digital']], theme: 'striped' });
+        
+        doc.setFontSize(18); doc.setFont(undefined, 'bold');
+        doc.text("TOTAL PAID: INR " + s.fee + "/-", 105, doc.lastAutoTable.finalY + 20, {align:"center"});
+        
+        doc.setFontSize(8); doc.setFont(undefined, 'normal'); doc.setTextColor(150);
+        doc.text("This is a computer generated invoice. No signature required.", 105, 280, {align:"center"});
+        doc.text("Powered by Khagesh ai-nexa | Nexa AI Solutions", 105, 285, {align:"center"});
+        
+        doc.save(s.name + "_Receipt.pdf");
+    }
+
+    // FIXED ATTENDANCE REPORT
+    function downloadAttendanceReport() {
+        const start = document.getElementById("repStart").value;
+        const end = document.getElementById("repEnd").value;
+        if(!start || !end) return alert("Select Date Range First");
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const rows = [];
+        
+        Object.keys(attendanceHistory).sort().forEach(date => {
+            if(date >= start && date <= end) {
+                attendanceHistory[date].forEach(a => {
+                    rows.push([date, a.name, a.status === "P" ? "Present" : "Absent"]);
+                });
+            }
+        });
+
+        if(rows.length === 0) return alert("No records found for these dates!");
+
+        doc.setFontSize(18); doc.text("Attendance Summary Sheet", 14, 15);
+        doc.setFontSize(10); doc.text(`From: ${start} To: ${end}`, 14, 22);
+        
+        doc.autoTable({ head: [['Date', 'Student Name', 'Status']], body: rows, startY: 30, theme: 'grid' });
+        doc.save("Attendance_Report.pdf");
+    }
+
+    function addStudent() {
+        const s = { id: Date.now(), name: document.getElementById("sName").value, batch: document.getElementById("sBatch").value, cls: document.getElementById("sClass").value, fee: document.getElementById("sFee").value, phone: document.getElementById("sPhone").value, joinDate: document.getElementById("sJoinDate").value };
+        const tx = db.transaction("students", "readwrite");
+        tx.objectStore("students").add(s);
+        tx.oncomplete = () => { students.push(s); renderAll(); alert("Saved!"); document.getElementById("studentForm").reset(); };
+    }
+
+    function loadAttendanceForDate() {
+        const d = document.getElementById("attDate").value || new Date().toISOString().split('T')[0];
+        document.getElementById("attDate").value = d;
+        const data = attendanceHistory[d] || [];
+        currentAttState = {};
+        students.forEach(s => { const rec = data.find(x => x.id === s.id); currentAttState[s.id] = rec ? rec.status === "P" : true; });
+        renderAttendanceList();
+    }
+
+    function saveAttendance() {
+        const d = document.getElementById("attDate").value;
+        const data = students.map(s => ({ id: s.id, name: s.name, status: currentAttState[s.id] ? "P" : "A" }));
+        const tx = db.transaction("attendance", "readwrite");
+        tx.objectStore("attendance").put({ date: d, data });
+        tx.oncomplete = () => { attendanceHistory[d] = data; alert("Attendance Locked!"); };
+    }
+
+    function exportToCSV() {
+        let csv = "Name,Batch,Class,Fee,Phone,JoinDate\n" + students.map(s => `${s.name},${s.batch},${s.cls},${s.fee},${s.phone},${s.joinDate}`).join("\n");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+        a.download = 'Students_Data.csv'; a.click();
+    }
+
+    function importCSV(ev) {
+        const f = ev.target.files[0];
+        const r = new FileReader();
+        r.onload = e => {
+            const lines = e.target.result.split('\n').slice(1);
+            const tx = db.transaction("students", "readwrite");
+            lines.forEach((l, i) => { const c = l.split(','); if(c[0]) tx.objectStore("students").put({ id: Date.now()+i, name: c[0], batch: c[1]||'', cls: c[2]||'', fee: c[3]||'0', phone: c[4]||'', joinDate: c[5]||'' }); });
+            tx.oncomplete = () => { alert("Import Done!"); loadData(); };
+        };
+        r.readAsText(f);
+    }
+
+    function downloadBackup() {
+        const data = JSON.stringify({ students, attendanceHistory });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
+        a.download = "Nexa_Backup.json"; a.click();
+    }
+
+    function hardResetSystem() { if(confirm("Clear All Data?")) { if(confirm("Sure?")) { const tx = db.transaction(["students", "attendance"], "readwrite"); tx.objectStore("students").clear(); tx.objectStore("attendance").clear(); tx.oncomplete = () => location.reload(); } } }
+    function deleteStudent(id) { if(confirm("Delete Student?")) { const tx = db.transaction("students", "readwrite"); tx.objectStore("students").delete(id); tx.oncomplete = () => { students = students.filter(s => s.id !== id); renderAll(); }; } }
+    function switchTab(t) { document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active-tab")); document.getElementById("tab-" + t).classList.add("active-tab"); }
+    function activateApp() { if(document.getElementById("licenseKey").value === P_KEY) { localStorage.setItem("nexa_v82_active", "true"); unlockApp(); } else { alert("Key Error!"); } }
+    function unlockApp() { document.getElementById("securityWall").style.display = "none"; document.getElementById("appBody").style.display = "block"; }
+    function initSecurity() {
+        const t = localStorage.getItem("nexa_v82_trial") || Date.now();
+        const left = 7 - Math.floor((Date.now() - t) / 864e5);
+        if (localStorage.getItem("nexa_v82_active") === "true") unlockApp();
+        else if (left <= 0) { document.getElementById("daysLeft").innerText = "0"; document.getElementById("trialBtn").style.display = "none"; }
+        else document.getElementById("daysLeft").innerText = left;
+    }
+    function sendBulkReminders() {
+        const sel = Array.from(document.querySelectorAll(".fee-check:checked")).map(cb => cb.dataset.id);
+        sel.forEach((id, i) => { const s = students.find(x => x.id == id); setTimeout(() => window.open(`https://wa.me/91${s.phone}?text=Fee Reminder: Rs.${s.fee}`), i * 2000); });
+    }
+</script>
 </body>
 </html>
