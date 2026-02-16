@@ -11,121 +11,131 @@
         [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; }
         
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui; margin: 0; padding: 0; transition: 0.2s; }
-        body { background: var(--bg); color: var(--text); padding: 10px; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); padding: 10px; padding-bottom: 85px; }
 
-        .ceo-header { text-align: center; margin-bottom: 15px; padding: 25px; border-radius: 24px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; position: relative; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); }
-        .theme-toggle { position: absolute; top: 12px; right: 18px; font-size: 22px; cursor: pointer; }
-        .ceo-name { font-size: 26px; font-weight: 900; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; letter-spacing: 1px; }
-        .ceo-addr { font-size: 13px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; margin-top: 5px; }
+        .ceo-header { text-align: center; margin-bottom: 15px; padding: 20px; border-radius: 20px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; position: relative; }
+        .theme-toggle { position: absolute; top: 12px; right: 18px; font-size: 20px; cursor: pointer; }
+        .ceo-name { font-size: 22px; font-weight: 900; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; }
+        .ceo-addr { font-size: 11px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; }
 
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
-        .prog-bg { background: rgba(255,255,255,0.1); height: 12px; border-radius: 6px; margin: 12px 0; overflow: hidden; }
-        [data-theme="light"] .prog-bg { background: rgba(0,0,0,0.05); }
-        .prog-fill { background: linear-gradient(90deg, #0ea5e9, #60a5fa); height: 100%; width: 0%; border-radius: 6px; }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .prog-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        .prog-fill { background: var(--p); height: 100%; width: 0%; border-radius: 5px; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .full { grid-column: span 2; }
-        input, select { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
-        input:focus { border-color: var(--p); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
         
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 15px; letter-spacing: 0.5px; }
-        .wa-btn { background: #25d366; color: white; border: none; padding: 8px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        .wa-btn { background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; border-top: 1px solid var(--border); height: 70px; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #94a3b8; text-decoration: none; }
-        .tab.active { color: var(--p); }
-        .tab-icon { font-size: 20px; margin-bottom: 4px; }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; border-top: 1px solid var(--border); height: 70px; z-index: 1000; }
+        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #94a3b8; }
+        .tab.active { color: var(--p); border-top: 3px solid var(--p); background: rgba(14,165,233,0.05); }
 
-        .panel { display: none; animation: slideUp 0.3s ease-out; }
+        .panel { display: none; }
         .panel.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 18px 0; }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .badge-paid { background: rgba(34,197,94,0.1); color: #22c55e; }
-        .badge-pend { background: rgba(245,158,11,0.1); color: #f59e0b; }
+        .ledger-item { border-bottom: 1px solid var(--border); padding: 12px 0; }
+        
+        .bill-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-box { padding: 10px; border-radius: 12px; text-align: center; }
     </style>
 </head>
 <body data-theme="dark">
 
 <div class="ceo-header">
     <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
-    <input type="text" id="fName" class="ceo-name" value="KHAGESH" oninput="saveC()">
-    <input type="text" id="fAddr" class="ceo-addr" value="Delhi, India | Founder Nexa AI" oninput="saveC()">
-</div>
-
-<div style="display:flex; gap:10px; margin-bottom:15px; padding: 0 5px;">
-    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:14px; border-radius:14px; border:1px solid var(--border); background:var(--card); color:var(--text); font-weight:bold; font-size:12px;">📥 IMPORT</button>
-    <button onclick="exportPremiumBill()" id="exportBtn" style="flex:1; padding:14px; border-radius:14px; border:none; background:#0ea5e9; color:white; font-weight:bold; font-size:12px; box-shadow: 0 4px 15px rgba(14,165,233,0.3);">📄 PREMIUM BILL</button>
-    <input type="file" id="imp" hidden onchange="importData(event)">
+    <input type="text" id="fName" class="ceo-name" oninput="saveC()">
+    <input type="text" id="fAddr" class="ceo-addr" oninput="saveC()">
 </div>
 
 <div id="Home" class="panel active">
     <div class="glass-card">
-        <div style="display:flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 14px; opacity: 0.8;">Monthly Revenue Target</span>
-            <span id="pVal" style="color:var(--p); font-weight: 900; font-size: 18px;">0%</span>
+        <div style="display:flex; justify-content: space-between;">
+            <span>Revenue Target</span>
+            <span id="pVal" style="color:var(--p)">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
         <div style="display:flex; justify-content: space-between; font-size: 12px;">
-            <span>Current: <b id="currEarned">₹0</b></span>
-            <span onclick="setG()" style="cursor:pointer; color:var(--p)">Goal: <b id="gVal">₹0</b> ⚙️</span>
+            <span>Earned: <b id="currEarned">₹0</b></span>
+            <span onclick="setG()" style="cursor:pointer;">Goal: <b id="gVal">₹0</b> ⚙️</span>
         </div>
     </div>
 
     <div class="glass-card">
-        <h4 style="margin-bottom:15px; color:var(--p); font-size:16px; display:flex; align-items:center; gap:8px;">
-            <span>🚀</span> New Business Record
-        </h4>
+        <h4 style="margin-bottom:12px; color:var(--p)">New Record</h4>
         <div class="form-grid">
             <input type="hidden" id="editId">
-            <input type="text" id="cName" placeholder="Client / Business Name" class="full">
-            <input type="text" id="cLoc" placeholder="Location (City/State)">
-            <input type="text" id="cApp" placeholder="Software/App Sold">
-            <input type="tel" id="cPhone" value="+91" placeholder="WhatsApp Number">
-            <input type="number" id="cAmt" placeholder="Billing Amount (₹)">
+            <input type="text" id="cName" placeholder="Client Name" class="full">
+            <input type="text" id="cLoc" placeholder="Location">
+            <input type="text" id="cApp" placeholder="Software Name">
+            <input type="tel" id="cPhone" value="+91" placeholder="WhatsApp">
+            <input type="number" id="cAmt" placeholder="Amount (₹)">
             <input type="date" id="cDate">
             <select id="cStatus" class="full">
-                <option value="Paid">✅ Paid Full</option>
-                <option value="Pending">⏳ Payment Pending</option>
+                <option value="Paid">Paid</option>
+                <option value="Pending">Pending</option>
             </select>
-            <button id="addBtn" class="main-btn full" onclick="save()">SAVE TO CLOUD ⚡</button>
+            <button id="addBtn" class="main-btn full" onclick="save()">SAVE RECORD 🚀</button>
         </div>
     </div>
 </div>
 
 <div id="Ledger" class="panel">
     <div class="glass-card">
-        <input type="text" id="search" placeholder="Search by Client, App, or Location..." oninput="render()" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--border); margin-bottom:15px;">
+        <input type="text" id="search" placeholder="Search..." oninput="render()" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
         <div id="list"></div>
     </div>
 </div>
 
+<div id="Billing" class="panel">
+    <div class="glass-card">
+        <h4 style="margin-bottom:10px;">Filter By Month</h4>
+        <select id="monthFilter" onchange="renderBilling()" style="margin-bottom:15px;">
+            <option value="all">All Months</option>
+            <option value="01">January</option><option value="02">February</option>
+            <option value="03">March</option><option value="04">April</option>
+            <option value="05">May</option><option value="06">June</option>
+            <option value="07">July</option><option value="08">August</option>
+            <option value="09">September</option><option value="10">October</option>
+            <option value="11">November</option><option value="12">December</option>
+        </select>
+        
+        <div class="bill-stat-grid">
+            <div class="stat-box" style="background: rgba(34,197,94,0.1); color: #22c55e;">
+                <small>Paid</small><br><b id="monthPaid">₹0</b>
+            </div>
+            <div class="stat-box" style="background: rgba(239,68,68,0.1); color: #ef4444;">
+                <small>Pending</small><br><b id="monthPend">₹0</b>
+            </div>
+        </div>
+
+        <button onclick="exportPremiumBill()" class="main-btn" style="background:#0f172a; margin-bottom:15px;">📄 DOWNLOAD MONTHLY REPORT</button>
+        <div id="billList"></div>
+    </div>
+</div>
+
 <div class="tab-bar">
-    <div class="tab active" onclick="tab('Home', this)">
-        <span class="tab-icon">📊</span><span>DASHBOARD</span>
-    </div>
-    <div class="tab" onclick="tab('Ledger', this)">
-        <span class="tab-icon">📖</span><span>LEDGER</span>
-    </div>
+    <div class="tab active" onclick="tab('Home', this)"><span>🏠</span>HOME</div>
+    <div class="tab" onclick="tab('Ledger', this)"><span>📑</span>LEDGER</div>
+    <div class="tab" onclick="tab('Billing', this)"><span>🧾</span>BILLING</div>
 </div>
 
 <script>
     let db, allData = [], goal = localStorage.getItem('nGoal') || 50000;
     
-    if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
+    // CEO & Theme Setup
+    document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
+    document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
+    function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
     if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
-
     function toggleTheme() {
         const mode = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.body.setAttribute('data-theme', mode);
         localStorage.setItem('theme', mode);
     }
 
-    document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
-    document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
-    function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
-
+    // DB Connection
     const req = indexedDB.open("Nexa_CEO_Elite_Permanent", 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath:"id", autoIncrement:true});
     req.onsuccess = e => { db = e.target.result; load(); };
@@ -135,6 +145,7 @@
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
+        if(id === 'Billing') renderBilling();
     }
 
     function save() {
@@ -142,13 +153,13 @@
         const data = {
             name: document.getElementById('cName').value,
             addr: document.getElementById('cLoc').value,
-            app: document.getElementById('cApp').value || 'Nexa App',
+            app: document.getElementById('cApp').value,
             phone: document.getElementById('cPhone').value,
             amt: parseFloat(document.getElementById('cAmt').value) || 0,
             date: document.getElementById('cDate').value,
             status: document.getElementById('cStatus').value
         };
-        if(!data.name || data.phone.length < 10) return alert("Please fill all details!");
+        if(!data.name) return alert("Enter Name!");
         const tx = db.transaction("sales", "readwrite");
         if(id) { data.id = parseInt(id); tx.objectStore("sales").put(data); } 
         else { tx.objectStore("sales").add(data); }
@@ -175,32 +186,71 @@
         const q = document.getElementById('search').value.toLowerCase();
         const list = document.getElementById('list');
         list.innerHTML = "";
-        allData.filter(i => i.name.toLowerCase().includes(q) || i.app.toLowerCase().includes(q) || i.addr.toLowerCase().includes(q)).forEach(i => {
+        allData.filter(i => i.name.toLowerCase().includes(q) || i.app.toLowerCase().includes(q)).forEach(i => {
             const div = document.createElement('div');
             div.className = "ledger-item";
             div.innerHTML = `
-                <div>
-                    <b style="font-size:15px;">${i.name}</b> <span class="badge ${i.status==='Paid'?'badge-paid':'badge-pend'}">${i.status}</span><br>
-                    <small style="opacity:0.6; font-size:11px;">${i.app} | ${i.addr} | ${i.date}</small><br>
-                    <button class="wa-btn" onclick="wa(${i.id})">📲 WhatsApp Share</button>
-                </div>
-                <div style="text-align:right">
-                    <span style="color:var(--p); font-weight:900; font-size:16px;">₹${i.amt}</span><br>
-                    <div style="margin-top:8px;">
-                        <button style="border:none; background:none; color:var(--text); font-size:12px; margin-right:10px;" onclick="edit(${i.id})">✏️ Edit</button>
-                        <button style="border:none; background:none; color:#ef4444; font-size:12px;" onclick="del(${i.id})">🗑️</button>
+                <div style="display:flex; justify-content:space-between">
+                    <div><b>${i.name}</b> <small>(${i.app})</small><br><small style="opacity:0.6">${i.date}</small></div>
+                    <div style="text-align:right">
+                        <span style="color:${i.status==='Paid'?'#22c55e':'#ef4444'}">₹${i.amt}</span><br>
+                        <button onclick="edit(${i.id})" style="border:none;background:none;color:var(--p);font-size:10px">Edit</button>
                     </div>
                 </div>`;
             list.appendChild(div);
         });
     }
 
+    function renderBilling() {
+        const m = document.getElementById('monthFilter').value;
+        const list = document.getElementById('billList');
+        let pTotal = 0, dTotal = 0;
+        list.innerHTML = "";
+        
+        const filtered = allData.filter(i => m === 'all' || i.date.split('-')[1] === m);
+        
+        filtered.forEach(i => {
+            if(i.status === 'Paid') pTotal += i.amt; else dTotal += i.amt;
+            const div = document.createElement('div');
+            div.className = "ledger-item";
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><b>${i.name}</b><br><small>${i.app} | ${i.date}</small></div>
+                    <button class="wa-btn" onclick="wa(${i.id})">Share</button>
+                </div>`;
+            list.appendChild(div);
+        });
+        document.getElementById('monthPaid').innerText = `₹${pTotal}`;
+        document.getElementById('monthPend').innerText = `₹${dTotal}`;
+    }
+
     function wa(id) {
         const i = allData.find(x => x.id === id);
-        const msg = i.status === 'Paid' 
-            ? `*INVOICE ACKNOWLEDGMENT*\n\nHello ${i.name},\nThis is to confirm that we have received your payment of *₹${i.amt}* for *${i.app}*.\n\nThank you for choosing *Khagesh ai-nexa*.\n_Success Delivered._` 
-            : `*PAYMENT REMINDER*\n\nHello ${i.name},\nThis is a friendly reminder for the pending payment of *₹${i.amt}* for *${i.app}*.\n\nPlease process it at your earliest.\n\nRegards,\n*Khagesh ai-nexa*`;
+        const msg = `*Invoice from Khagesh ai-nexa*\n\nClient: ${i.name}\nApp: ${i.app}\nAmount: ₹${i.amt}\nStatus: ${i.status}\nDate: ${i.date}\n\nThank you for your business!`;
         window.open(`https://wa.me/${i.phone.replace('+','')}/?text=${encodeURIComponent(msg)}`);
+    }
+
+    function exportPremiumBill() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const m = document.getElementById('monthFilter').value;
+        const fN = document.getElementById('fName').value;
+        
+        doc.setFillColor(14, 165, 233); doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(255); doc.setFontSize(20); doc.text(fN, 15, 20);
+        doc.setFontSize(10); doc.text("MONTHLY SALES AUDIT", 140, 20);
+
+        const filtered = allData.filter(i => m === 'all' || i.date.split('-')[1] === m);
+        const rows = filtered.map(i => [i.date, i.name, i.app, i.status, `Rs. ${i.amt}`]);
+
+        doc.autoTable({
+            startY: 40,
+            head: [['Date', 'Client', 'Product', 'Status', 'Amount']],
+            body: rows,
+            headStyles: { fillColor: [14, 165, 233] }
+        });
+
+        doc.save(`${fN}_Report_${m}.pdf`);
     }
 
     function edit(id) {
@@ -213,108 +263,14 @@
         document.getElementById('cAmt').value = item.amt;
         document.getElementById('cDate').value = item.date;
         document.getElementById('cStatus').value = item.status;
-        document.getElementById('addBtn').innerText = "UPDATE BUSINESS RECORD ⚡";
+        document.getElementById('addBtn').innerText = "Update";
         tab('Home', document.querySelectorAll('.tab')[0]);
     }
 
-    function del(id) { if(confirm("Are you sure you want to delete this record?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
-
-    // THE PREMIUM BILL EXPORT ENGINE
-    async function exportPremiumBill() {
-        const btn = document.getElementById('exportBtn');
-        btn.innerText = "⏳ GENERATING...";
-        
-        try {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const fN = document.getElementById('fName').value;
-            const fA = document.getElementById('fAddr').value;
-
-            // 1. Professional Header
-            doc.setFillColor(14, 165, 233);
-            doc.rect(0, 0, 210, 40, 'F');
-            
-            doc.setFontSize(24);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont("helvetica", "bold");
-            doc.text(fN, 15, 20);
-            
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            doc.text(fA, 15, 28);
-            
-            doc.setFontSize(18);
-            doc.text("SALES AUDIT REPORT", 140, 20);
-            doc.setFontSize(9);
-            doc.text(`Date: ${new Date().toLocaleDateString()}`, 140, 28);
-
-            // 2. Table Data
-            let totalEarned = 0;
-            let totalPending = 0;
-            const rows = allData.map(i => {
-                if(i.status === 'Paid') totalEarned += i.amt; else totalPending += i.amt;
-                return [i.date, i.name, i.addr, i.app, i.status, `Rs. ${i.amt}`];
-            });
-
-            doc.autoTable({
-                startY: 50,
-                head: [['Date', 'Client Name', 'Location', 'Product/App', 'Status', 'Amount']],
-                body: rows,
-                headStyles: { fillColor: [14, 165, 233], textColor: 255, fontStyle: 'bold' },
-                alternateRowStyles: { fillColor: [245, 247, 250] },
-                styles: { fontSize: 9, cellPadding: 4 },
-                margin: { left: 15, right: 15 }
-            });
-
-            // 3. Summary Box (The Bill Look)
-            const finalY = doc.lastAutoTable.finalY + 15;
-            
-            // Earned Box
-            doc.setFillColor(34, 197, 94);
-            doc.rect(120, finalY, 75, 25, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(10);
-            doc.text("TOTAL REVENUE (PAID)", 125, finalY + 10);
-            doc.setFontSize(14);
-            doc.text(`Rs. ${totalEarned.toLocaleString()}`, 125, finalY + 18);
-
-            // Pending Info
-            doc.setTextColor(100);
-            doc.setFontSize(10);
-            doc.text(`* Total Pending Market Payment: Rs. ${totalPending.toLocaleString()}`, 15, finalY + 10);
-            doc.text(`* Total Sales Records: ${allData.length}`, 15, finalY + 18);
-
-            // Footer
-            doc.setFontSize(8);
-            doc.setTextColor(150);
-            doc.text("This is a computer-generated report powered by Khagesh ai-nexa.", 15, 285);
-
-            doc.save(`${fN}_Business_Audit.pdf`);
-            
-        } catch (err) {
-            alert("Error: Script loading issue. Please check internet.");
-            console.error(err);
-        } finally {
-            btn.innerText = "📄 PREMIUM BILL";
-        }
-    }
-
-    function importData(e) {
-        const reader = new FileReader();
-        reader.onload = ev => {
-            const data = JSON.parse(ev.target.result);
-            const tx = db.transaction("sales", "readwrite");
-            data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-            tx.oncomplete = () => { load(); alert("Cloud Sync Success: Data Restored!"); };
-        };
-        reader.readAsText(e.target.files[0]);
-    }
-
-    function setG() { let g = prompt("Set Monthly Target Revenue (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
+    function setG() { let g = prompt("Goal:", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
     function reset() { 
         ['editId','cName','cLoc','cApp','cAmt'].forEach(id => document.getElementById(id).value = "");
         document.getElementById('cPhone').value = "+91";
-        document.getElementById('addBtn').innerText = "SAVE TO CLOUD ⚡";
         document.getElementById('cDate').valueAsDate = new Date();
     }
     document.getElementById('cDate').valueAsDate = new Date();
