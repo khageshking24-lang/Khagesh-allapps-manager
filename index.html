@@ -9,36 +9,27 @@
     <style>
         :root { --p: #0ea5e9; --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155; }
         [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; }
-        
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui; margin: 0; padding: 0; transition: 0.2s; }
         body { background: var(--bg); color: var(--text); padding: 10px; padding-bottom: 85px; }
-
         .ceo-header { text-align: center; margin-bottom: 15px; padding: 20px; border-radius: 20px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .theme-toggle { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
         .ceo-name { font-size: 24px; font-weight: 800; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; }
         .ceo-addr { font-size: 12px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; }
-
         .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .prog-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
         .prog-fill { background: var(--p); height: 100%; width: 0%; border-radius: 5px; box-shadow: 0 0 10px var(--p); }
-
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .full { grid-column: span 2; }
         input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
-        
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(14,165,233,0.3); }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .wa-btn { background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
         .bill-btn { background: #6366f1; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
-
         .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; border-top: 1px solid var(--border); height: 70px; z-index: 1000; }
         .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #94a3b8; }
         .tab.active { color: var(--p); border-top: 3px solid var(--p); background: rgba(14,165,233,0.05); }
-
         .panel { display: none; }
         .panel.active { display: block; }
         .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 15px 0; }
-        
-        #libStatus { font-size: 10px; text-align: center; margin-top: 5px; opacity: 0.7; }
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .stat-card { padding: 10px; border-radius: 12px; text-align: center; background: rgba(14,165,233,0.1); border: 1px solid var(--border); }
     </style>
@@ -53,19 +44,21 @@
 
 <div style="display:flex; gap:10px; margin-bottom:15px;">
     <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--text); font-weight:bold;">📥 Import</button>
-    <button onclick="forceExport()" id="exportBtn" style="flex:1; padding:12px; border-radius:12px; border:none; background:#0f172a; color:white; font-weight:bold;">📄 Export PDF</button>
+    <button onclick="forceExport()" id="exportBtn" style="flex:1; padding:12px; border-radius:12px; border:none; background:#0f172a; color:white; font-weight:bold;">📄 Export All</button>
     <input type="file" id="imp" hidden onchange="importData(event)">
 </div>
-<div id="libStatus">PDF System: Ready ✅</div>
 
 <div id="Home" class="panel active">
     <div class="glass-card">
         <div style="display:flex; justify-content: space-between;">
-            <span>Target: <b id="gVal">₹0</b></span>
+            <span>Revenue Target</span>
             <span id="pVal" style="color:var(--p)">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
-        <small onclick="setG()" style="opacity:0.6; font-size:10px; cursor:pointer;">Click to set monthly goal</small>
+        <div style="display:flex; justify-content: space-between; font-size: 12px;">
+            <span>Paid: <b id="currEarned">₹0</b></span>
+            <span onclick="setG()" style="cursor:pointer; color:var(--p)">Goal: <b id="gVal">₹0</b> ⚙️</span>
+        </div>
     </div>
 
     <div class="glass-card">
@@ -73,8 +66,8 @@
         <div class="form-grid">
             <input type="hidden" id="editId">
             <input type="text" id="cName" placeholder="Client Name" class="full">
-            <input type="text" id="cLoc" placeholder="Location">
-            <input type="text" id="cApp" placeholder="App Name">
+            <input type="text" id="cLoc" placeholder="Location (City)">
+            <input type="text" id="cApp" placeholder="App/Software Sold">
             <input type="tel" id="cPhone" value="+91" placeholder="WhatsApp Number">
             <input type="number" id="cAmt" placeholder="Amount (₹)">
             <input type="date" id="cDate">
@@ -89,7 +82,7 @@
 
 <div id="Ledger" class="panel">
     <div class="glass-card">
-        <input type="text" id="search" placeholder="Search records..." oninput="render()" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
+        <input type="text" id="search" placeholder="Search..." oninput="render()" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
         <div id="list"></div>
     </div>
 </div>
@@ -106,12 +99,10 @@
             <option value="09">September</option><option value="10">October</option>
             <option value="11">November</option><option value="12">December</option>
         </select>
-        
         <div class="stat-grid">
             <div class="stat-card"><small>Paid</small><br><b id="mPaid" style="color:#16a34a">₹0</b></div>
             <div class="stat-card"><small>Pending</small><br><b id="mPend" style="color:#ef4444">₹0</b></div>
         </div>
-        
         <div id="billList"></div>
     </div>
 </div>
@@ -125,10 +116,10 @@
 <script>
     let db, allData = [], goal = localStorage.getItem('nGoal') || 50000;
     
-    // Auto Persist
-    if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
-    
-    // Theme & CEO Setup
+    // CEO & Theme Logic
+    document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
+    document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
+    function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
     if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
     function toggleTheme() {
         const mode = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -136,11 +127,7 @@
         localStorage.setItem('theme', mode);
     }
 
-    document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
-    document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
-    function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
-
-    // DB Connection
+    // DB Init
     const req = indexedDB.open("Nexa_CEO_Elite_Permanent", 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath:"id", autoIncrement:true});
     req.onsuccess = e => { db = e.target.result; load(); };
@@ -164,7 +151,7 @@
             date: document.getElementById('cDate').value,
             status: document.getElementById('cStatus').value
         };
-        if(!data.name) return alert("Enter Name!");
+        if(!data.name) return alert("Enter Client Name!");
         const tx = db.transaction("sales", "readwrite");
         if(id) { data.id = parseInt(id); tx.objectStore("sales").put(data); } 
         else { tx.objectStore("sales").add(data); }
@@ -181,6 +168,7 @@
     function stats() {
         let p = 0; allData.forEach(i => { if(i.status === 'Paid') p += i.amt; });
         document.getElementById('gVal').innerText = `₹${goal}`;
+        document.getElementById('currEarned').innerText = `₹${p}`;
         let perc = Math.min((p / goal) * 100, 100).toFixed(1);
         document.getElementById('pBar').style.width = perc + "%";
         document.getElementById('pVal').innerText = perc + "%";
@@ -193,13 +181,10 @@
         allData.filter(i => i.name.toLowerCase().includes(q) || i.app.toLowerCase().includes(q)).forEach(i => {
             const div = document.createElement('div');
             div.className = "ledger-item";
-            div.innerHTML = `
-                <div><b>${i.name}</b> <small>(${i.app})</small><br><small style="opacity:0.6">${i.addr} | ${i.date}</small></div>
-                <div style="text-align:right">
-                    <span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:800;">₹${i.amt}</span><br>
-                    <button style="border:none;background:none;color:var(--p);font-size:11px" onclick="edit(${i.id})">Edit</button> | 
-                    <button style="border:none;background:none;color:red;font-size:11px" onclick="del(${i.id})">Del</button>
-                </div>`;
+            div.innerHTML = `<div><b>${i.name}</b><br><small style="opacity:0.6">${i.app} | ${i.date}</small></div>
+                <div style="text-align:right"><span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:800;">₹${i.amt}</span><br>
+                <button style="border:none;background:none;color:var(--p);font-size:11px" onclick="edit(${i.id})">Edit</button> | 
+                <button style="border:none;background:none;color:red;font-size:11px" onclick="del(${i.id})">Del</button></div>`;
             list.appendChild(div);
         });
     }
@@ -213,12 +198,9 @@
             if(i.status === 'Paid') p += i.amt; else d += i.amt;
             const div = document.createElement('div');
             div.className = "ledger-item";
-            div.innerHTML = `
-                <div><b>${i.name}</b><br><small>${i.app} | ${i.date}</small></div>
-                <div style="text-align:right">
-                    <button class="bill-btn" onclick="genInvoice(${i.id})">📄 Bill</button><br>
-                    <button class="wa-btn" onclick="wa(${i.id})">💬 Share</button>
-                </div>`;
+            div.innerHTML = `<div><b>${i.name}</b><br><small>${i.app} | ${i.date}</small></div>
+                <div style="text-align:right"><button class="bill-btn" onclick="genInvoice(${i.id})">📄 Bill</button><br>
+                <button class="wa-btn" onclick="wa(${i.id})">💬 Share</button></div>`;
             list.appendChild(div);
         });
         document.getElementById('mPaid').innerText = `₹${p}`;
@@ -231,45 +213,76 @@
         window.open(`https://wa.me/${i.phone.replace('+','')}/?text=${encodeURIComponent(msg)}`);
     }
 
-    // THE RELIABLE ENGINE (V8.5 logic)
+    // IMPROVED PREMIUM EXPORT (With Grand Total)
     async function forceExport() {
-        if (!window.jspdf) return alert("System Loading, try again in 2 sec.");
+        if (!window.jspdf) return alert("System Loading...");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const fN = document.getElementById('fName').value;
-        doc.setFontSize(20); doc.text(fN, 14, 20);
-        doc.setDrawColor(14, 165, 233); doc.line(14, 25, 196, 25);
-        
-        doc.autoTable({
-            startY: 30,
-            head: [['Date', 'Client', 'App', 'Status', 'Amount']],
-            body: allData.map(i => [i.date, i.name, i.app, i.status, `Rs. ${i.amt}`]),
-            headStyles: { fillColor: [14, 165, 233] }
+        const fA = document.getElementById('fAddr').value;
+
+        // Header Branding
+        doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 35, 'F');
+        doc.setTextColor(255); doc.setFontSize(22); doc.text(fN, 14, 20);
+        doc.setFontSize(10); doc.text(fA, 14, 28);
+        doc.setFontSize(14); doc.text("SALES AUDIT REPORT", 145, 20);
+
+        let grandTotal = 0;
+        const body = allData.map(i => {
+            grandTotal += i.amt;
+            return [i.date, i.name, i.addr, i.app, i.status, `Rs. ${i.amt}`];
         });
-        doc.save(`${fN}_Report.pdf`);
+
+        doc.autoTable({
+            startY: 40,
+            head: [['Date', 'Client', 'Location', 'App', 'Status', 'Amount']],
+            body: body,
+            headStyles: { fillColor: [14, 165, 233] },
+            theme: 'striped'
+        });
+
+        // Grand Total Section
+        const finalY = doc.lastAutoTable.finalY + 10;
+        doc.setTextColor(15, 23, 42); doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        doc.text(`GRAND TOTAL VOLUME: Rs. ${grandTotal.toLocaleString()}`, 110, finalY);
+        
+        doc.setFontSize(9); doc.setFont("helvetica", "normal");
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, finalY + 10);
+
+        doc.save(`${fN}_Audit_Report.pdf`);
     }
 
+    // IMPROVED INDIVIDUAL INVOICE
     async function genInvoice(id) {
         const i = allData.find(x => x.id === id);
         if (!window.jspdf) return alert("System Loading...");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const fN = document.getElementById('fName').value;
+        const fA = document.getElementById('fAddr').value;
 
-        doc.setFillColor(14, 165, 233); doc.rect(0, 0, 210, 35, 'F');
-        doc.setTextColor(255); doc.setFontSize(22); doc.text(fN, 15, 20);
-        doc.setFontSize(10); doc.text("BUSINESS INVOICE", 150, 20);
+        // Invoice Header
+        doc.setFillColor(14, 165, 233); doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(255); doc.setFontSize(24); doc.text(fN, 15, 20);
+        doc.setFontSize(10); doc.text(fA, 15, 28);
+        doc.setFontSize(18); doc.text("INVOICE", 160, 22);
 
-        doc.setTextColor(40); doc.text(`Bill To: ${i.name}`, 15, 50);
-        doc.text(`App: ${i.app}`, 15, 58);
-        doc.text(`Date: ${i.date}`, 150, 50);
+        doc.setTextColor(40); doc.setFontSize(12);
+        doc.text(`To: ${i.name}`, 15, 55);
+        doc.text(`Location: ${i.addr}`, 15, 62);
+        doc.text(`Date: ${i.date}`, 150, 55);
 
         doc.autoTable({
-            startY: 70,
-            head: [['Description', 'Status', 'Amount']],
-            body: [[`Software License: ${i.app}`, i.status, `Rs. ${i.amt}`]],
-            headStyles: { fillColor: [14, 165, 233] }
+            startY: 75,
+            head: [['Description', 'Payment Status', 'Total Amount']],
+            body: [[`License for ${i.app}`, i.status, `Rs. ${i.amt}`]],
+            headStyles: { fillColor: [15, 23, 42] },
+            theme: 'grid'
         });
+
+        doc.setFontSize(14); doc.setFont("helvetica", "bold");
+        doc.text(`Net Total: Rs. ${i.amt.toLocaleString()}`, 140, doc.lastAutoTable.finalY + 15);
+        
         doc.save(`Invoice_${i.name}.pdf`);
     }
 
@@ -294,17 +307,19 @@
             const data = JSON.parse(ev.target.result);
             const tx = db.transaction("sales", "readwrite");
             data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-            tx.oncomplete = () => { load(); alert("Restored!"); };
+            tx.oncomplete = () => { load(); alert("Data Restored!"); };
         };
         reader.readAsText(e.target.files[0]);
     }
-    function setG() { let g = prompt("Goal (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
+    function setG() { let g = prompt("Set Monthly Goal (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
     function reset() { 
         ['editId','cName','cLoc','cApp','cAmt'].forEach(id => document.getElementById(id).value = "");
         document.getElementById('cPhone').value = "+91";
+        document.getElementById('addBtn').innerText = "SAVE TO LEDGER 🚀";
         document.getElementById('cDate').valueAsDate = new Date();
     }
     document.getElementById('cDate').valueAsDate = new Date();
 </script>
 </body>
-</html>
+    </html>
+    
