@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexa CEO Elite | Khagesh</title>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.23/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <style>
         :root { --p: #0ea5e9; --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155; }
         [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; }
@@ -13,32 +13,37 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui; margin: 0; padding: 0; transition: 0.2s; }
         body { background: var(--bg); color: var(--text); padding: 10px; padding-bottom: 80px; }
 
-        .ceo-header { text-align: center; margin-bottom: 15px; padding: 20px; border-radius: 20px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .theme-toggle { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; }
-        .ceo-name { font-size: 24px; font-weight: 800; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; }
-        .ceo-addr { font-size: 12px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; }
+        .ceo-header { text-align: center; margin-bottom: 15px; padding: 25px; border-radius: 24px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; position: relative; box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3); }
+        .theme-toggle { position: absolute; top: 12px; right: 18px; font-size: 22px; cursor: pointer; }
+        .ceo-name { font-size: 26px; font-weight: 900; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; letter-spacing: 1px; }
+        .ceo-addr { font-size: 13px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; margin-top: 5px; }
 
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .prog-bg { background: rgba(255,255,255,0.1); height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
-        .prog-fill { background: var(--p); height: 100%; width: 0%; border-radius: 5px; box-shadow: 0 0 10px var(--p); }
+        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+        .prog-bg { background: rgba(255,255,255,0.1); height: 12px; border-radius: 6px; margin: 12px 0; overflow: hidden; }
+        [data-theme="light"] .prog-bg { background: rgba(0,0,0,0.05); }
+        .prog-fill { background: linear-gradient(90deg, #0ea5e9, #60a5fa); height: 100%; width: 0%; border-radius: 6px; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .full { grid-column: span 2; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
-        input:focus { border-color: var(--p); }
+        input, select { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
+        input:focus { border-color: var(--p); box-shadow: 0 0 0 3px rgba(14,165,233,0.1); }
         
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(14,165,233,0.3); }
-        .wa-btn { background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 15px; letter-spacing: 0.5px; }
+        .wa-btn { background: #25d366; color: white; border: none; padding: 8px 15px; border-radius: 10px; font-size: 12px; font-weight: bold; margin-top: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; border-top: 1px solid var(--border); height: 65px; z-index: 1000; }
-        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #94a3b8; }
-        .tab.active { color: var(--p); border-top: 3px solid var(--p); background: rgba(14,165,233,0.05); }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card); display: flex; border-top: 1px solid var(--border); height: 70px; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
+        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #94a3b8; text-decoration: none; }
+        .tab.active { color: var(--p); }
+        .tab-icon { font-size: 20px; margin-bottom: 4px; }
 
-        .panel { display: none; }
+        .panel { display: none; animation: slideUp 0.3s ease-out; }
         .panel.active { display: block; }
-        .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 15px 0; }
-        
-        #libStatus { font-size: 10px; text-align: center; margin-top: 5px; opacity: 0.7; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding: 18px 0; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        .badge-paid { background: rgba(34,197,94,0.1); color: #22c55e; }
+        .badge-pend { background: rgba(245,158,11,0.1); color: #f59e0b; }
     </style>
 </head>
 <body data-theme="dark">
@@ -49,74 +54,78 @@
     <input type="text" id="fAddr" class="ceo-addr" value="Delhi, India | Founder Nexa AI" oninput="saveC()">
 </div>
 
-<div style="display:flex; gap:10px; margin-bottom:15px;">
-    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--text); font-weight:bold;">📥 Import</button>
-    <button onclick="forceExport()" id="exportBtn" style="flex:1; padding:12px; border-radius:12px; border:none; background:#0f172a; color:white; font-weight:bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">📄 Export PDF</button>
+<div style="display:flex; gap:10px; margin-bottom:15px; padding: 0 5px;">
+    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:14px; border-radius:14px; border:1px solid var(--border); background:var(--card); color:var(--text); font-weight:bold; font-size:12px;">📥 IMPORT</button>
+    <button onclick="exportPremiumBill()" id="exportBtn" style="flex:1; padding:14px; border-radius:14px; border:none; background:#0ea5e9; color:white; font-weight:bold; font-size:12px; box-shadow: 0 4px 15px rgba(14,165,233,0.3);">📄 PREMIUM BILL</button>
     <input type="file" id="imp" hidden onchange="importData(event)">
 </div>
-<div id="libStatus">PDF System: Ready ✅</div>
 
 <div id="Home" class="panel active">
     <div class="glass-card">
-        <div style="display:flex; justify-content: space-between;">
-            <span>Target: <b id="gVal">₹0</b></span>
-            <span id="pVal" style="color:var(--p)">0%</span>
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 14px; opacity: 0.8;">Monthly Revenue Target</span>
+            <span id="pVal" style="color:var(--p); font-weight: 900; font-size: 18px;">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
-        <small onclick="setG()" style="opacity:0.6; font-size:10px;">Click to set monthly goal</small>
+        <div style="display:flex; justify-content: space-between; font-size: 12px;">
+            <span>Current: <b id="currEarned">₹0</b></span>
+            <span onclick="setG()" style="cursor:pointer; color:var(--p)">Goal: <b id="gVal">₹0</b> ⚙️</span>
+        </div>
     </div>
 
     <div class="glass-card">
-        <h4 style="margin-bottom:12px; color:var(--p)">Add New Business Sale</h4>
+        <h4 style="margin-bottom:15px; color:var(--p); font-size:16px; display:flex; align-items:center; gap:8px;">
+            <span>🚀</span> New Business Record
+        </h4>
         <div class="form-grid">
             <input type="hidden" id="editId">
-            <input type="text" id="cName" placeholder="Client Name" class="full">
-            <input type="text" id="cLoc" placeholder="Location (e.g. Bihar)">
-            <input type="text" id="cApp" placeholder="App Name (e.g. EduMaster)">
+            <input type="text" id="cName" placeholder="Client / Business Name" class="full">
+            <input type="text" id="cLoc" placeholder="Location (City/State)">
+            <input type="text" id="cApp" placeholder="Software/App Sold">
             <input type="tel" id="cPhone" value="+91" placeholder="WhatsApp Number">
-            <input type="number" id="cAmt" placeholder="Amount (₹)">
+            <input type="number" id="cAmt" placeholder="Billing Amount (₹)">
             <input type="date" id="cDate">
             <select id="cStatus" class="full">
-                <option value="Paid">Paid</option>
-                <option value="Pending">Pending</option>
+                <option value="Paid">✅ Paid Full</option>
+                <option value="Pending">⏳ Payment Pending</option>
             </select>
-            <button id="addBtn" class="main-btn full" onclick="save()">SAVE TO LEDGER 🚀</button>
+            <button id="addBtn" class="main-btn full" onclick="save()">SAVE TO CLOUD ⚡</button>
         </div>
     </div>
 </div>
 
 <div id="Ledger" class="panel">
     <div class="glass-card">
-        <input type="text" id="search" placeholder="Search by name, app or city..." oninput="render()" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); margin-bottom:10px;">
+        <input type="text" id="search" placeholder="Search by Client, App, or Location..." oninput="render()" style="width:100%; padding:14px; border-radius:12px; border:1px solid var(--border); margin-bottom:15px;">
         <div id="list"></div>
     </div>
 </div>
 
 <div class="tab-bar">
-    <div class="tab active" onclick="tab('Home', this)">🏠 HOME</div>
-    <div class="tab" onclick="tab('Ledger', this)">📑 LEDGER</div>
+    <div class="tab active" onclick="tab('Home', this)">
+        <span class="tab-icon">📊</span><span>DASHBOARD</span>
+    </div>
+    <div class="tab" onclick="tab('Ledger', this)">
+        <span class="tab-icon">📖</span><span>LEDGER</span>
+    </div>
 </div>
 
 <script>
     let db, allData = [], goal = localStorage.getItem('nGoal') || 50000;
     
-    // Auto Persist
     if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
-    
-    // Theme Logic
     if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
+
     function toggleTheme() {
         const mode = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
         document.body.setAttribute('data-theme', mode);
         localStorage.setItem('theme', mode);
     }
 
-    // CEO Branding
     document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
     document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
     function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
 
-    // Database Initialization (Permanent)
     const req = indexedDB.open("Nexa_CEO_Elite_Permanent", 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath:"id", autoIncrement:true});
     req.onsuccess = e => { db = e.target.result; load(); };
@@ -139,7 +148,7 @@
             date: document.getElementById('cDate').value,
             status: document.getElementById('cStatus').value
         };
-        if(!data.name || data.phone.length < 10) return alert("Missing Details!");
+        if(!data.name || data.phone.length < 10) return alert("Please fill all details!");
         const tx = db.transaction("sales", "readwrite");
         if(id) { data.id = parseInt(id); tx.objectStore("sales").put(data); } 
         else { tx.objectStore("sales").add(data); }
@@ -156,6 +165,7 @@
     function stats() {
         let p = 0; allData.forEach(i => { if(i.status === 'Paid') p += i.amt; });
         document.getElementById('gVal').innerText = `₹${goal}`;
+        document.getElementById('currEarned').innerText = `₹${p}`;
         let perc = Math.min((p / goal) * 100, 100).toFixed(1);
         document.getElementById('pBar').style.width = perc + "%";
         document.getElementById('pVal').innerText = perc + "%";
@@ -165,19 +175,21 @@
         const q = document.getElementById('search').value.toLowerCase();
         const list = document.getElementById('list');
         list.innerHTML = "";
-        allData.filter(i => i.name.toLowerCase().includes(q) || i.app.toLowerCase().includes(q)).forEach(i => {
+        allData.filter(i => i.name.toLowerCase().includes(q) || i.app.toLowerCase().includes(q) || i.addr.toLowerCase().includes(q)).forEach(i => {
             const div = document.createElement('div');
             div.className = "ledger-item";
             div.innerHTML = `
                 <div>
-                    <b>${i.name}</b> <small style="color:var(--p)">(${i.app})</small><br>
-                    <small style="opacity:0.6">${i.addr} | ${i.date}</small><br>
-                    <button class="wa-btn" onclick="wa(${i.id})">💬 Follow-up</button>
+                    <b style="font-size:15px;">${i.name}</b> <span class="badge ${i.status==='Paid'?'badge-paid':'badge-pend'}">${i.status}</span><br>
+                    <small style="opacity:0.6; font-size:11px;">${i.app} | ${i.addr} | ${i.date}</small><br>
+                    <button class="wa-btn" onclick="wa(${i.id})">📲 WhatsApp Share</button>
                 </div>
                 <div style="text-align:right">
-                    <span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:800;">₹${i.amt}</span><br>
-                    <button style="border:none; background:none; color:var(--p); font-size:11px;" onclick="edit(${i.id})">Edit</button> | 
-                    <button style="border:none; background:none; color:red; font-size:11px;" onclick="del(${i.id})">Del</button>
+                    <span style="color:var(--p); font-weight:900; font-size:16px;">₹${i.amt}</span><br>
+                    <div style="margin-top:8px;">
+                        <button style="border:none; background:none; color:var(--text); font-size:12px; margin-right:10px;" onclick="edit(${i.id})">✏️ Edit</button>
+                        <button style="border:none; background:none; color:#ef4444; font-size:12px;" onclick="del(${i.id})">🗑️</button>
+                    </div>
                 </div>`;
             list.appendChild(div);
         });
@@ -185,7 +197,9 @@
 
     function wa(id) {
         const i = allData.find(x => x.id === id);
-        const msg = i.status === 'Paid' ? `Hi ${i.name}, Nexa AI received ₹${i.amt} for ${i.app}. Thank you!` : `Hi ${i.name}, Reminder from Nexa AI: Payment of ₹${i.amt} for ${i.app} is pending.`;
+        const msg = i.status === 'Paid' 
+            ? `*INVOICE ACKNOWLEDGMENT*\n\nHello ${i.name},\nThis is to confirm that we have received your payment of *₹${i.amt}* for *${i.app}*.\n\nThank you for choosing *Khagesh ai-nexa*.\n_Success Delivered._` 
+            : `*PAYMENT REMINDER*\n\nHello ${i.name},\nThis is a friendly reminder for the pending payment of *₹${i.amt}* for *${i.app}*.\n\nPlease process it at your earliest.\n\nRegards,\n*Khagesh ai-nexa*`;
         window.open(`https://wa.me/${i.phone.replace('+','')}/?text=${encodeURIComponent(msg)}`);
     }
 
@@ -199,63 +213,89 @@
         document.getElementById('cAmt').value = item.amt;
         document.getElementById('cDate').value = item.date;
         document.getElementById('cStatus').value = item.status;
-        document.getElementById('addBtn').innerText = "UPDATE RECORD ⚡";
+        document.getElementById('addBtn').innerText = "UPDATE BUSINESS RECORD ⚡";
         tab('Home', document.querySelectorAll('.tab')[0]);
     }
 
-    function del(id) { if(confirm("Delete record?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
+    function del(id) { if(confirm("Are you sure you want to delete this record?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
 
-    // FORCE EXPORT LOGIC
-    async function forceExport() {
+    // THE PREMIUM BILL EXPORT ENGINE
+    async function exportPremiumBill() {
         const btn = document.getElementById('exportBtn');
-        btn.innerText = "⏳ Loading...";
+        btn.innerText = "⏳ GENERATING...";
         
-        // Manual check if libraries are available
-        const jspdfReady = (window.jspdf && window.jspdf.jsPDF);
-        
-        if (!jspdfReady) {
-            document.getElementById('libStatus').innerText = "Error: System not ready. Retrying...";
-            // Attempt to re-inject scripts if they failed
-            const s1 = document.createElement('script'); s1.src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-            document.head.appendChild(s1);
-            alert("PDF System initializing. Please wait 3 seconds and try again.");
-            btn.innerText = "📄 Export PDF";
-            return;
-        }
-
         try {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF('p', 'mm', 'a4');
             const fN = document.getElementById('fName').value;
             const fA = document.getElementById('fAddr').value;
 
-            doc.setFontSize(22); doc.setTextColor(14, 165, 233); doc.text(fN, 14, 20);
-            doc.setFontSize(10); doc.setTextColor(100); doc.text(fA, 14, 26);
-            doc.setDrawColor(14, 165, 233); doc.line(14, 30, 196, 30);
+            // 1. Professional Header
+            doc.setFillColor(14, 165, 233);
+            doc.rect(0, 0, 210, 40, 'F');
+            
+            doc.setFontSize(24);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.text(fN, 15, 20);
+            
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text(fA, 15, 28);
+            
+            doc.setFontSize(18);
+            doc.text("SALES AUDIT REPORT", 140, 20);
+            doc.setFontSize(9);
+            doc.text(`Date: ${new Date().toLocaleDateString()}`, 140, 28);
 
-            let total = 0;
-            const body = allData.map(i => {
-                if(i.status === 'Paid') total += i.amt;
+            // 2. Table Data
+            let totalEarned = 0;
+            let totalPending = 0;
+            const rows = allData.map(i => {
+                if(i.status === 'Paid') totalEarned += i.amt; else totalPending += i.amt;
                 return [i.date, i.name, i.addr, i.app, i.status, `Rs. ${i.amt}`];
             });
 
             doc.autoTable({
-                startY: 40,
-                head: [['Date', 'Client', 'Address', 'App Name', 'Status', 'Amount']],
-                body: body,
-                theme: 'grid',
-                headStyles: { fillColor: [14, 165, 233] }
+                startY: 50,
+                head: [['Date', 'Client Name', 'Location', 'Product/App', 'Status', 'Amount']],
+                body: rows,
+                headStyles: { fillColor: [14, 165, 233], textColor: 255, fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [245, 247, 250] },
+                styles: { fontSize: 9, cellPadding: 4 },
+                margin: { left: 15, right: 15 }
             });
 
-            doc.setFontSize(14); doc.setTextColor(22, 163, 74);
-            doc.text(`GRAND TOTAL EARNED: Rs. ${total}`, 14, doc.lastAutoTable.finalY + 15);
-            doc.save(`${fN}_Business_Report.pdf`);
-            document.getElementById('libStatus').innerText = "PDF System: Success ✅";
-        } catch (e) {
-            alert("Export Failed. Please try Chrome browser or check connection.");
-            console.error(e);
+            // 3. Summary Box (The Bill Look)
+            const finalY = doc.lastAutoTable.finalY + 15;
+            
+            // Earned Box
+            doc.setFillColor(34, 197, 94);
+            doc.rect(120, finalY, 75, 25, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(10);
+            doc.text("TOTAL REVENUE (PAID)", 125, finalY + 10);
+            doc.setFontSize(14);
+            doc.text(`Rs. ${totalEarned.toLocaleString()}`, 125, finalY + 18);
+
+            // Pending Info
+            doc.setTextColor(100);
+            doc.setFontSize(10);
+            doc.text(`* Total Pending Market Payment: Rs. ${totalPending.toLocaleString()}`, 15, finalY + 10);
+            doc.text(`* Total Sales Records: ${allData.length}`, 15, finalY + 18);
+
+            // Footer
+            doc.setFontSize(8);
+            doc.setTextColor(150);
+            doc.text("This is a computer-generated report powered by Khagesh ai-nexa.", 15, 285);
+
+            doc.save(`${fN}_Business_Audit.pdf`);
+            
+        } catch (err) {
+            alert("Error: Script loading issue. Please check internet.");
+            console.error(err);
         } finally {
-            btn.innerText = "📄 Export PDF";
+            btn.innerText = "📄 PREMIUM BILL";
         }
     }
 
@@ -265,16 +305,16 @@
             const data = JSON.parse(ev.target.result);
             const tx = db.transaction("sales", "readwrite");
             data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-            tx.oncomplete = () => { load(); alert("Success: Data Restored!"); };
+            tx.oncomplete = () => { load(); alert("Cloud Sync Success: Data Restored!"); };
         };
         reader.readAsText(e.target.files[0]);
     }
 
-    function setG() { let g = prompt("Enter Target (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
+    function setG() { let g = prompt("Set Monthly Target Revenue (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
     function reset() { 
         ['editId','cName','cLoc','cApp','cAmt'].forEach(id => document.getElementById(id).value = "");
         document.getElementById('cPhone').value = "+91";
-        document.getElementById('addBtn').innerText = "SAVE TO LEDGER 🚀";
+        document.getElementById('addBtn').innerText = "SAVE TO CLOUD ⚡";
         document.getElementById('cDate').valueAsDate = new Date();
     }
     document.getElementById('cDate').valueAsDate = new Date();
