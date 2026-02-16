@@ -17,16 +17,16 @@
 
         .glass-card { background: var(--glass); border: 1px solid rgba(14, 165, 233, 0.15); border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .prog-bg { background: rgba(255,255,255,0.3); height: 12px; border-radius: 6px; margin: 12px 0; overflow: hidden; }
-        .prog-fill { background: white; height: 100%; width: 0%; transition: 1.2s; }
+        .prog-fill { background: white; height: 100%; width: 0%; transition: 1s ease-in-out; }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .full { grid-column: span 2; }
-        input, select { width: 100%; padding: 14px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: white; }
         
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .wa-btn { background: var(--wa); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; display: inline-block; text-decoration: none; }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(14,165,233,0.2); }
+        .wa-btn { background: var(--wa); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; }
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #e2e8f0; height: 65px; }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #e2e8f0; height: 65px; z-index: 100; }
         .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #94a3b8; }
         .tab.active { color: var(--p); border-top: 4px solid var(--p); background: #f0f9ff; }
 
@@ -44,28 +44,28 @@
 </div>
 
 <div style="display:flex; gap:10px; margin-bottom:15px;">
-    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; background:white; font-size:12px;">Restore Data</button>
-    <button onclick="exportPDF()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#0f172a; color:white; font-size:12px;">Export Audit PDF</button>
+    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; background:white; font-size:12px; font-weight:bold;">📥 Restore</button>
+    <button onclick="exportPDF()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#0f172a; color:white; font-size:12px; font-weight:bold;">📄 Export PDF</button>
     <input type="file" id="imp" hidden onchange="importData(event)">
 </div>
 
 <div id="Home" class="panel active">
     <div class="glass-card" style="background: var(--p); color: white;">
         <div style="display:flex; justify-content: space-between;">
-            <span>Monthly Target: <b id="goalVal">₹0</b></span>
+            <span>Target: <b id="goalVal">₹0</b></span>
             <span id="percVal">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
-        <small onclick="setGoal()" style="cursor:pointer; opacity:0.8;">Tap to change goal</small>
+        <small onclick="setGoal()" style="cursor:pointer; opacity:0.8; font-size:11px;">Tap to set goal</small>
     </div>
 
     <div class="glass-card">
-        <h4 style="margin-bottom:15px; color:var(--p)">New Business Entry</h4>
+        <h4 style="margin-bottom:12px; color:var(--p)">Record New Sale</h4>
         <div class="form-grid">
             <input type="hidden" id="editId">
             <input type="text" id="cName" placeholder="Client Name" class="full">
             <input type="text" id="cAddr" placeholder="Location">
-            <input type="text" id="cApp" placeholder="App Sold">
+            <input type="text" id="cApp" placeholder="App Name (Doctor, Gym, etc.)">
             <input type="tel" id="cPhone" placeholder="WhatsApp Number">
             <input type="number" id="cAmt" placeholder="Amount (₹)">
             <input type="date" id="cDate">
@@ -86,13 +86,22 @@
 </div>
 
 <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('Home', this)">DASHBOARD</div>
+    <div class="tab active" onclick="switchTab('Home', this)">HOME</div>
     <div class="tab" onclick="switchTab('Ledger', this)">LEDGER</div>
 </div>
 
 <script>
     let db, allData = [], goal = localStorage.getItem('nexaGoal') || 50000;
     
+    // Persistence Storage Request
+    async function requestPersistence() {
+        if (navigator.storage && navigator.storage.persist) {
+            const isPersisted = await navigator.storage.persist();
+            console.log(`Storage Persisted: ${isPersisted}`);
+        }
+    }
+    requestPersistence();
+
     document.getElementById('founderName').value = localStorage.getItem('ceoName') || "KHAGESH";
     document.getElementById('founderAddr').value = localStorage.getItem('ceoAddr') || "Delhi, India | Nexa AI Founder";
     
@@ -101,8 +110,14 @@
         localStorage.setItem('ceoAddr', document.getElementById('founderAddr').value);
     }
 
-    const req = indexedDB.open("NexaCEO_WA_V5", 1);
-    req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath: "id", autoIncrement: true});
+    // Permanent Database Name
+    const req = indexedDB.open("Nexa_CEO_Permanent_DB", 1);
+    req.onupgradeneeded = e => {
+        let dbRef = e.target.result;
+        if (!dbRef.objectStoreNames.contains("sales")) {
+            dbRef.createObjectStore("sales", {keyPath: "id", autoIncrement: true});
+        }
+    };
     req.onsuccess = e => { db = e.target.result; load(); };
 
     function switchTab(id, el) {
@@ -117,13 +132,13 @@
         const data = {
             name: document.getElementById('cName').value,
             addr: document.getElementById('cAddr').value,
-            app: document.getElementById('cApp').value || 'Nexa App',
+            app: document.getElementById('cApp').value || 'Nexa ERP',
             phone: document.getElementById('cPhone').value,
             amt: parseFloat(document.getElementById('cAmt').value) || 0,
             date: document.getElementById('cDate').value,
             status: document.getElementById('cStatus').value
         };
-        if(!data.name) return;
+        if(!data.name) return alert("Enter Name");
         const tx = db.transaction("sales", "readwrite");
         const store = tx.objectStore("sales");
         if(id) { data.id = parseInt(id); store.put(data); } else { store.add(data); }
@@ -145,14 +160,6 @@
         document.getElementById('percVal').innerText = perc + "%";
     }
 
-    function sendWA(id) {
-        const i = allData.find(x => x.id === id);
-        const msg = i.status === 'Paid' 
-            ? `Hello ${i.name}, Nexa AI ki taraf se ${i.app} ke liye payment receive ho gayi hai. Thank you!` 
-            : `Hello ${i.name}, Nexa AI ki taraf se reminder. Aapki ${i.app} ki payment ₹${i.amt} pending hai. Kripya process karein.`;
-        window.open(`https://wa.me/${i.phone}?text=${encodeURIComponent(msg)}`);
-    }
-
     function render() {
         const q = document.getElementById('search').value.toLowerCase();
         const list = document.getElementById('list');
@@ -164,7 +171,7 @@
                 <div>
                     <b>${i.name}</b> <small>(${i.app})</small><br>
                     <small style="color:#64748b">${i.addr} | ${i.date}</small><br>
-                    <button class="wa-btn" onclick="sendWA(${i.id})">💬 WhatsApp</button>
+                    <button class="wa-btn" onclick="sendWA(${i.id})">💬 Follow-up</button>
                 </div>
                 <div style="text-align:right">
                     <span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:700;">₹${i.amt}</span><br>
@@ -173,6 +180,14 @@
                 </div>`;
             list.appendChild(div);
         });
+    }
+
+    function sendWA(id) {
+        const i = allData.find(x => x.id === id);
+        const msg = i.status === 'Paid' 
+            ? `Hello ${i.name}, Nexa AI ki taraf se ${i.app} ke liye ₹${i.amt} payment receive ho gayi hai. Thank you!` 
+            : `Hello ${i.name}, Nexa AI reminder: Aapki ${i.app} ki payment ₹${i.amt} pending hai. Kripya ise jald process karein.`;
+        window.open(`https://wa.me/${i.phone}?text=${encodeURIComponent(msg)}`);
     }
 
     function editRec(id) {
@@ -189,16 +204,20 @@
         switchTab('Home', document.querySelectorAll('.tab')[0]);
     }
 
-    function delRec(id) { if(confirm("Delete record?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
+    function delRec(id) { if(confirm("Delete this?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
 
-    async function exportPDF() {
+    function exportPDF() {
+        if (typeof window.jspdf === 'undefined') {
+            alert("PDF library loading... please try again in 2 seconds.");
+            return;
+        }
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const name = document.getElementById('founderName').value;
-        const addr = document.getElementById('founderAddr').value;
+        const fName = document.getElementById('founderName').value;
+        const fAddr = document.getElementById('founderAddr').value;
 
-        doc.setFontSize(22); doc.setTextColor(2, 132, 199); doc.text(name, 14, 20);
-        doc.setFontSize(10); doc.setTextColor(100); doc.text(addr, 14, 26);
+        doc.setFontSize(22); doc.setTextColor(2, 132, 199); doc.text(fName, 14, 20);
+        doc.setFontSize(10); doc.setTextColor(100); doc.text(fAddr, 14, 26);
         doc.line(14, 30, 196, 30);
 
         let total = 0;
@@ -216,7 +235,7 @@
 
         doc.setFontSize(14); doc.setTextColor(22, 163, 74);
         doc.text(`GRAND TOTAL (EARNED): Rs. ${total}`, 14, doc.lastAutoTable.finalY + 15);
-        doc.save(`${name}_Audit.pdf`);
+        doc.save(`${fName}_Nexa_Audit.pdf`);
     }
 
     function importData(e) {
@@ -226,11 +245,12 @@
             const tx = db.transaction("sales", "readwrite");
             data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
             tx.oncomplete = load;
+            alert("Data Restored Successfully!");
         };
         reader.readAsText(e.target.files[0]);
     }
 
-    function setGoal() { let g = prompt("Monthly Target:", goal); if(g) { goal = g; localStorage.setItem('nexaGoal', g); updateStats(); } }
+    function setGoal() { let g = prompt("Target (₹):", goal); if(g) { goal = g; localStorage.setItem('nexaGoal', g); updateStats(); } }
     function resetForm() { 
         ['editId','cName','cAddr','cApp','cPhone','cAmt'].forEach(id => document.getElementById(id).value = "");
         document.getElementById('addBtn').innerText = "RECORD SALE 🚀";
