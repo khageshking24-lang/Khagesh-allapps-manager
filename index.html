@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nexa CEO Elite | Khagesh</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.23/dist/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root { --p: #0ea5e9; --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --border: #334155; }
         [data-theme="light"] { --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; }
@@ -25,9 +25,8 @@
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .full { grid-column: span 2; }
         input, select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; background: var(--card); color: var(--text); outline: none; }
-        input:focus { border-color: var(--p); }
         
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 15px rgba(14,165,233,0.3); }
         .wa-btn { background: #25d366; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
         .bill-btn { background: #6366f1; color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin-top: 5px; cursor: pointer; }
 
@@ -48,16 +47,16 @@
 
 <div class="ceo-header">
     <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
-    <input type="text" id="fName" class="ceo-name" value="KHAGESH" oninput="saveC()">
-    <input type="text" id="fAddr" class="ceo-addr" value="Delhi, India | Founder Nexa AI" oninput="saveC()">
+    <input type="text" id="fName" class="ceo-name" oninput="saveC()">
+    <input type="text" id="fAddr" class="ceo-addr" oninput="saveC()">
 </div>
 
 <div style="display:flex; gap:10px; margin-bottom:15px;">
     <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--border); background:var(--card); color:var(--text); font-weight:bold;">📥 Import</button>
-    <button onclick="forceExport()" id="exportBtn" style="flex:1; padding:12px; border-radius:12px; border:none; background:#0f172a; color:white; font-weight:bold;">📄 Export All</button>
+    <button onclick="forceExport()" id="exportBtn" style="flex:1; padding:12px; border-radius:12px; border:none; background:#0f172a; color:white; font-weight:bold;">📄 Export PDF</button>
     <input type="file" id="imp" hidden onchange="importData(event)">
 </div>
-<div id="libStatus">Status: PDF Ready ✅</div>
+<div id="libStatus">PDF System: Ready ✅</div>
 
 <div id="Home" class="panel active">
     <div class="glass-card">
@@ -66,7 +65,7 @@
             <span id="pVal" style="color:var(--p)">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
-        <small onclick="setG()" style="opacity:0.6; font-size:10px;">Click to set monthly goal</small>
+        <small onclick="setG()" style="opacity:0.6; font-size:10px; cursor:pointer;">Click to set monthly goal</small>
     </div>
 
     <div class="glass-card">
@@ -98,7 +97,7 @@
 <div id="Billing" class="panel">
     <div class="glass-card">
         <h4 style="margin-bottom:10px;">Monthly Billing Center</h4>
-        <select id="monthFilter" onchange="renderBilling()" style="margin-bottom:15px;">
+        <select id="monthFilter" onchange="renderBilling()" style="margin-bottom:15px; width:100%;">
             <option value="all">View All Time</option>
             <option value="01">January</option><option value="02">February</option>
             <option value="03">March</option><option value="04">April</option>
@@ -126,7 +125,10 @@
 <script>
     let db, allData = [], goal = localStorage.getItem('nGoal') || 50000;
     
+    // Auto Persist
     if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
+    
+    // Theme & CEO Setup
     if(localStorage.getItem('theme') === 'light') document.body.setAttribute('data-theme', 'light');
     function toggleTheme() {
         const mode = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -138,6 +140,7 @@
     document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
     function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
 
+    // DB Connection
     const req = indexedDB.open("Nexa_CEO_Elite_Permanent", 1);
     req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath:"id", autoIncrement:true});
     req.onsuccess = e => { db = e.target.result; load(); };
@@ -191,14 +194,11 @@
             const div = document.createElement('div');
             div.className = "ledger-item";
             div.innerHTML = `
-                <div>
-                    <b>${i.name}</b> <small style="color:var(--p)">(${i.app})</small><br>
-                    <small style="opacity:0.6">${i.addr} | ${i.date}</small>
-                </div>
+                <div><b>${i.name}</b> <small>(${i.app})</small><br><small style="opacity:0.6">${i.addr} | ${i.date}</small></div>
                 <div style="text-align:right">
                     <span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:800;">₹${i.amt}</span><br>
-                    <button style="border:none; background:none; color:var(--p); font-size:11px;" onclick="edit(${i.id})">Edit</button> | 
-                    <button style="border:none; background:none; color:red; font-size:11px;" onclick="del(${i.id})">Del</button>
+                    <button style="border:none;background:none;color:var(--p);font-size:11px" onclick="edit(${i.id})">Edit</button> | 
+                    <button style="border:none;background:none;color:red;font-size:11px" onclick="del(${i.id})">Del</button>
                 </div>`;
             list.appendChild(div);
         });
@@ -216,7 +216,7 @@
             div.innerHTML = `
                 <div><b>${i.name}</b><br><small>${i.app} | ${i.date}</small></div>
                 <div style="text-align:right">
-                    <button class="bill-btn" onclick="genInvoice(${i.id})">📄 Invoice</button><br>
+                    <button class="bill-btn" onclick="genInvoice(${i.id})">📄 Bill</button><br>
                     <button class="wa-btn" onclick="wa(${i.id})">💬 Share</button>
                 </div>`;
             list.appendChild(div);
@@ -227,54 +227,50 @@
 
     function wa(id) {
         const i = allData.find(x => x.id === id);
-        const msg = `*Invoiced by Khagesh ai-nexa*\nClient: ${i.name}\nApp: ${i.app}\nAmount: ₹${i.amt}\nStatus: ${i.status}\nDate: ${i.date}`;
+        const msg = `*Invoiced by ${document.getElementById('fName').value}*\nClient: ${i.name}\nAmount: ₹${i.amt}\nStatus: ${i.status}`;
         window.open(`https://wa.me/${i.phone.replace('+','')}/?text=${encodeURIComponent(msg)}`);
+    }
+
+    // THE RELIABLE ENGINE (V8.5 logic)
+    async function forceExport() {
+        if (!window.jspdf) return alert("System Loading, try again in 2 sec.");
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const fN = document.getElementById('fName').value;
+        doc.setFontSize(20); doc.text(fN, 14, 20);
+        doc.setDrawColor(14, 165, 233); doc.line(14, 25, 196, 25);
+        
+        doc.autoTable({
+            startY: 30,
+            head: [['Date', 'Client', 'App', 'Status', 'Amount']],
+            body: allData.map(i => [i.date, i.name, i.app, i.status, `Rs. ${i.amt}`]),
+            headStyles: { fillColor: [14, 165, 233] }
+        });
+        doc.save(`${fN}_Report.pdf`);
     }
 
     async function genInvoice(id) {
         const i = allData.find(x => x.id === id);
+        if (!window.jspdf) return alert("System Loading...");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         const fN = document.getElementById('fName').value;
-        const fA = document.getElementById('fAddr').value;
 
-        // Invoice Header Design
-        doc.setFillColor(14, 165, 233); doc.rect(0, 0, 210, 40, 'F');
+        doc.setFillColor(14, 165, 233); doc.rect(0, 0, 210, 35, 'F');
         doc.setTextColor(255); doc.setFontSize(22); doc.text(fN, 15, 20);
-        doc.setFontSize(10); doc.text(fA, 15, 28);
-        doc.setFontSize(18); doc.text("BUSINESS INVOICE", 140, 20);
-        
-        doc.setTextColor(40); doc.setFontSize(12);
-        doc.text(`Invoice To: ${i.name}`, 15, 55);
-        doc.text(`Location: ${i.addr}`, 15, 62);
-        doc.text(`Date: ${i.date}`, 150, 55);
+        doc.setFontSize(10); doc.text("BUSINESS INVOICE", 150, 20);
+
+        doc.setTextColor(40); doc.text(`Bill To: ${i.name}`, 15, 50);
+        doc.text(`App: ${i.app}`, 15, 58);
+        doc.text(`Date: ${i.date}`, 150, 50);
 
         doc.autoTable({
-            startY: 75,
-            head: [['Description', 'Status', 'Total Amount']],
+            startY: 70,
+            head: [['Description', 'Status', 'Amount']],
             body: [[`Software License: ${i.app}`, i.status, `Rs. ${i.amt}`]],
-            headStyles: { fillColor: [14, 165, 233] },
-            theme: 'grid'
+            headStyles: { fillColor: [14, 165, 233] }
         });
-
-        doc.setFontSize(14); doc.text(`Net Payable: Rs. ${i.amt}`, 140, doc.lastAutoTable.finalY + 15);
-        doc.setFontSize(10); doc.setTextColor(100); doc.text("Thank you for your business!", 15, doc.lastAutoTable.finalY + 30);
-        
         doc.save(`Invoice_${i.name}.pdf`);
-    }
-
-    async function forceExport() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        const fN = document.getElementById('fName').value;
-        doc.text(`${fN} - Complete Sales Audit`, 15, 15);
-        doc.autoTable({
-            startY: 25,
-            head: [['Date', 'Client', 'App', 'Status', 'Amount']],
-            body: allData.map(i => [i.date, i.name, i.app, i.status, i.amt]),
-            headStyles: { fillColor: [15, 23, 42] }
-        });
-        doc.save("Full_Sales_Report.pdf");
     }
 
     function edit(id) {
@@ -291,26 +287,24 @@
         tab('Home', document.querySelectorAll('.tab')[0]);
     }
 
-    function del(id) { if(confirm("Delete record?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
+    function del(id) { if(confirm("Delete?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
     function importData(e) {
         const reader = new FileReader();
         reader.onload = ev => {
             const data = JSON.parse(ev.target.result);
             const tx = db.transaction("sales", "readwrite");
             data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-            tx.oncomplete = () => { load(); alert("Data Restored!"); };
+            tx.oncomplete = () => { load(); alert("Restored!"); };
         };
         reader.readAsText(e.target.files[0]);
     }
-    function setG() { let g = prompt("Enter Target (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
+    function setG() { let g = prompt("Goal (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
     function reset() { 
         ['editId','cName','cLoc','cApp','cAmt'].forEach(id => document.getElementById(id).value = "");
         document.getElementById('cPhone').value = "+91";
-        document.getElementById('addBtn').innerText = "SAVE TO LEDGER 🚀";
         document.getElementById('cDate').valueAsDate = new Date();
     }
     document.getElementById('cDate').valueAsDate = new Date();
 </script>
 </body>
-            </html>
-    
+</html>
