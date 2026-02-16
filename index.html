@@ -3,168 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexa Founder PRO | Target Tracker</title>
+    <title>Nexa Founder CEO | PRO</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.autotable.min.js"></script>
     <style>
-        :root { --bg: #020617; --card: #1e293b; --accent: #38bdf8; --success: #22c55e; --text: #f1f5f9; }
+        :root { --bg: #f8fafc; --primary: #0284c7; --card: #ffffff; --text: #1e293b; --accent: #bae6fd; }
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui; }
-        body { background: var(--bg); color: var(--text); margin: 0; padding: 15px; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
+        body { background: var(--bg); color: var(--text); margin: 0; padding: 15px; padding-bottom: 80px; }
         
-        /* Target Section */
-        .target-box { padding: 20px; margin-bottom: 20px; border-bottom: 3px solid var(--accent); }
-        .progress-container { background: #334155; height: 12px; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--success)); transition: 0.5s ease; }
+        .glass { background: var(--card); border: 1px solid var(--accent); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-card { padding: 15px; text-align: center; }
-        .stat-val { font-size: 20px; font-weight: bold; display: block; color: var(--accent); }
-        
-        .form-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 15px; margin-bottom: 15px; }
+        .top-nav { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
+        .top-nav button { flex: 1; padding: 10px; font-size: 12px; cursor: pointer; border-radius: 8px; border: 1px solid var(--accent); background: white; color: var(--primary); font-weight: bold; }
+
+        .target-card { padding: 15px; margin-bottom: 20px; border-top: 4px solid var(--primary); }
+        .progress-bg { background: #e2e8f0; height: 12px; border-radius: 6px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { background: linear-gradient(90deg, #0ea5e9, #22c55e); height: 100%; width: 0%; transition: 0.8s ease-in-out; }
+
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #e2e8f0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .tab { flex: 1; padding: 18px; text-align: center; font-weight: bold; color: #94a3b8; cursor: pointer; }
+        .tab.active { color: var(--primary); border-top: 3px solid var(--primary); background: #f0f9ff; }
+
+        .content { display: none; }
+        .content.active { display: block; }
+
+        .form-ui { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; margin-top: 15px; }
+        input, select { padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
         .full { grid-column: span 2; }
-        input, select, button { padding: 12px; border-radius: 8px; border: none; background: #1e293b; color: white; border: 1px solid #334155; }
-        button.main-btn { background: var(--accent); color: #020617; font-weight: 800; cursor: pointer; grid-column: span 2; }
-        
-        .list-container { display: flex; flex-direction: column; gap: 8px; }
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 12px; font-size: 14px; }
-        .search { width: 100%; margin-bottom: 15px; padding: 12px; background: transparent; border: 1px solid #334155; }
-        #observer-trigger { height: 30px; }
+        .main-btn { background: var(--primary); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .item-card { padding: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .status-paid { color: #16a34a; font-weight: bold; }
+        .status-pend { color: #d97706; font-weight: bold; }
+        .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 5px; border: none; cursor: pointer; margin-left: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h3 style="margin:0">🚀 Nexa Founder PRO</h3>
-        <div id="live-time" style="font-size: 12px; opacity: 0.7;"></div>
-    </div>
+<div class="top-nav">
+    <button onclick="document.getElementById('imp').click()">📥 Restore Data</button>
+    <button onclick="exportPDF()">📄 Export PDF Report</button>
+    <input type="file" id="imp" hidden onchange="importData(event)">
+</div>
 
-    <div class="target-box glass">
-        <div style="display:flex; justify-content: space-between;">
-            <span>Monthly Goal: <b id="goal-text">₹0</b></span>
-            <span id="percent-text">0%</span>
+<div id="Dashboard" class="content active">
+    <div class="target-card glass">
+        <div style="display:flex; justify-content: space-between; font-size: 14px;">
+            <span>Target: <b id="goal-val">₹0</b></span>
+            <span id="perc-val" style="color:var(--primary); font-weight:bold;">0%</span>
         </div>
-        <div class="progress-container">
-            <div id="p-bar" class="progress-bar"></div>
+        <div class="progress-bg"><div id="p-bar" class="progress-fill"></div></div>
+        <button onclick="setGoal()" style="font-size:11px; color:var(--primary); background:none; border:none; padding:0; cursor:pointer;">Edit Monthly Goal</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+        <div class="glass" style="padding:15px; text-align:center;">
+            <small style="color:#64748b">Earned</small><br><b id="st-p" style="font-size:20px; color:#16a34a">₹0</b>
         </div>
-        <button onclick="setGoal()" style="font-size:11px; padding:4px 8px; background:transparent; color:var(--accent); border:1px solid var(--accent)">Set New Target</button>
+        <div class="glass" style="padding:15px; text-align:center;">
+            <small style="color:#64748b">Pending</small><br><b id="st-d" style="font-size:20px; color:#d97706">₹0</b>
+        </div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card glass"><span>Earned</span><span class="stat-val" style="color:var(--success)" id="total-earn">₹0</span></div>
-        <div class="stat-card glass"><span>Pending</span><span class="stat-val" style="color:#fbbf24" id="total-pend">₹0</span></div>
-    </div>
-
-    <div class="form-group glass">
+    <div class="form-ui glass">
+        <h4 class="full" style="margin:0; color:var(--primary)">Client/Sale Entry</h4>
+        <input type="hidden" id="editId">
         <input type="text" id="cName" placeholder="Client Name" class="full">
-        <input type="text" id="cState" placeholder="State/City">
-        <input type="number" id="cAmt" placeholder="Amount">
+        <input type="text" id="cAddr" placeholder="State/City (e.g. Bihar)">
+        <input type="tel" id="cPhone" placeholder="Mobile Number">
+        <input type="number" id="cAmt" placeholder="Amount (e.g. 999)">
+        <input type="date" id="cDate">
         <select id="cStatus" class="full">
             <option value="Paid">Paid</option>
             <option value="Pending">Pending</option>
         </select>
-        <button class="main-btn" onclick="addEntry()">Record Sale</button>
+        <button id="addBtn" class="main-btn full" onclick="saveEntry()">Save Entry 🚀</button>
     </div>
+</div>
 
-    <input type="text" id="search" class="glass search" placeholder="Search by name or state..." oninput="render()">
+<div id="Sales" class="content">
+    <h3 style="color:var(--primary)">Business Ledger</h3>
+    <input type="text" id="search" placeholder="Search by Name or State..." oninput="render()" style="width:100%; padding:12px; margin-bottom:15px;" class="glass">
+    <div id="list"></div>
+    <div id="observer-trigger" style="height:30px"></div>
+</div>
 
-    <div id="list" class="list-container"></div>
-    <div id="observer-trigger"></div>
+<div class="tab-bar">
+    <div class="tab active" onclick="switchTab('Dashboard', this)">Home</div>
+    <div class="tab" onclick="switchTab('Sales', this)">Sales</div>
+</div>
 
-    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <button onclick="exportData()" style="font-size:12px">Backup Data</button>
-        <button onclick="document.getElementById('imp').click()" style="font-size:12px">Restore</button>
-        <input type="file" id="imp" hidden onchange="importData(event)">
-    </div>
+<script>
+    let db, allData = [], goal = localStorage.getItem('nexaGoal') || 50000;
+    document.getElementById('cDate').valueAsDate = new Date();
 
-    <script>
-        let db, allData = [], displayLimit = 15, currentGoal = localStorage.getItem('nexaGoal') || 50000;
+    const req = indexedDB.open("NexaCEO_V3", 1);
+    req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath: "id", autoIncrement: true});
+    req.onsuccess = e => { db = e.target.result; load(); };
 
-        const req = indexedDB.open("NexaPersonalDB", 1);
-        req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath: "id", autoIncrement: true});
-        req.onsuccess = e => { 
-            db = e.target.result; 
-            if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-            load(); 
+    function switchTab(id, el) {
+        document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    }
+
+    function saveEntry() {
+        const id = document.getElementById('editId').value;
+        const data = {
+            name: document.getElementById('cName').value,
+            addr: document.getElementById('cAddr').value,
+            phone: document.getElementById('cPhone').value,
+            amt: parseFloat(document.getElementById('cAmt').value) || 0,
+            date: document.getElementById('cDate').value,
+            status: document.getElementById('cStatus').value
         };
+        if(!data.name) return alert("Please fill Name");
+        const tx = db.transaction("sales", "readwrite");
+        const store = tx.objectStore("sales");
+        if(id) { data.id = parseInt(id); store.put(data); } else { store.add(data); }
+        tx.oncomplete = () => { load(); resetForm(); };
+    }
 
-        function setGoal() {
-            let g = prompt("Enter your monthly target (₹):", currentGoal);
-            if(g) { localStorage.setItem('nexaGoal', g); currentGoal = g; updateStats(); }
-        }
+    function load() {
+        db.transaction("sales").objectStore("sales").getAll().onsuccess = e => {
+            allData = e.target.result.reverse();
+            render(); updateStats();
+        };
+    }
 
-        function addEntry() {
-            const data = {
-                name: document.getElementById('cName').value,
-                state: document.getElementById('cState').value,
-                amt: parseFloat(document.getElementById('cAmt').value) || 0,
-                status: document.getElementById('cStatus').value,
-                date: new Date().toLocaleDateString()
-            };
-            if(!data.name) return;
+    function updateStats() {
+        let p = 0, d = 0;
+        allData.forEach(i => i.status === 'Paid' ? p += i.amt : d += i.amt);
+        document.getElementById('st-p').innerText = `₹${p}`;
+        document.getElementById('st-d').innerText = `₹${d}`;
+        document.getElementById('goal-val').innerText = `₹${goal}`;
+        let perc = Math.min((p / goal) * 100, 100).toFixed(1);
+        document.getElementById('p-bar').style.width = perc + "%";
+        document.getElementById('perc-val').innerText = perc + "%";
+    }
+
+    function render() {
+        const q = document.getElementById('search').value.toLowerCase();
+        const list = document.getElementById('list');
+        list.innerHTML = "";
+        allData.filter(i => i.name.toLowerCase().includes(q) || i.addr.toLowerCase().includes(q)).forEach(i => {
+            const div = document.createElement('div');
+            div.className = "item-card glass";
+            div.innerHTML = `
+                <div>
+                    <b>${i.name}</b> <br> <small>${i.addr} | ${i.date}</small> <br>
+                    <a href="tel:${i.phone}" style="text-decoration:none; color:var(--primary); font-size:12px">📞 ${i.phone || 'N/A'}</a>
+                </div>
+                <div style="text-align:right">
+                    <span class="${i.status === 'Paid' ? 'status-paid' : 'status-pend'}">₹${i.amt}</span><br>
+                    <button class="btn-sm" onclick="editRec(${i.id})">Edit</button>
+                    <button class="btn-sm" onclick="delRec(${i.id})" style="color:red">X</button>
+                </div>`;
+            list.appendChild(div);
+        });
+    }
+
+    function editRec(id) {
+        const item = allData.find(i => i.id === id);
+        document.getElementById('editId').value = item.id;
+        document.getElementById('cName').value = item.name;
+        document.getElementById('cAddr').value = item.addr;
+        document.getElementById('cPhone').value = item.phone;
+        document.getElementById('cAmt').value = item.amt;
+        document.getElementById('cDate').value = item.date;
+        document.getElementById('cStatus').value = item.status;
+        document.getElementById('addBtn').innerText = "Update Record ⚡";
+        switchTab('Dashboard', document.querySelectorAll('.tab')[0]);
+    }
+
+    function delRec(id) { if(confirm("Delete this entry?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
+
+    function exportPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(18); doc.setTextColor(2, 132, 199);
+        doc.text("NEXA AI - Business Earning Report", 14, 20);
+        doc.setFontSize(12); doc.setTextColor(100);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 28);
+        
+        let p = 0, d = 0; allData.forEach(i => i.status === 'Paid' ? p += i.amt : d += i.amt);
+        doc.text(`Total Earned: Rs. ${p} | Total Pending: Rs. ${d}`, 14, 38);
+
+        const rows = allData.map(i => [i.date, i.name, i.addr, i.phone, i.status, `Rs. ${i.amt}`]);
+        doc.autoTable({ head: [['Date', 'Client', 'State', 'Phone', 'Status', 'Amount']], body: rows, startY: 45 });
+        doc.save(`Nexa_Report_${new Date().toLocaleDateString()}.pdf`);
+    }
+
+    function importData(e) {
+        const reader = new FileReader();
+        reader.onload = ev => {
+            const data = JSON.parse(ev.target.result);
             const tx = db.transaction("sales", "readwrite");
-            tx.objectStore("sales").add(data);
-            tx.oncomplete = () => { load(); clear(); };
-        }
+            data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
+            tx.oncomplete = load;
+        };
+        reader.readAsText(e.target.files[0]);
+    }
 
-        function load() {
-            const tx = db.transaction("sales", "readonly");
-            const req = tx.objectStore("sales").getAll();
-            req.onsuccess = () => { allData = req.result.reverse(); render(); updateStats(); };
-        }
-
-        function updateStats() {
-            let p = 0, d = 0;
-            allData.forEach(i => i.status === 'Paid' ? p += i.amt : d += i.amt);
-            document.getElementById('total-earn').innerText = `₹${p}`;
-            document.getElementById('total-pend').innerText = `₹${d}`;
-            document.getElementById('goal-text').innerText = `₹${currentGoal}`;
-            
-            let perc = Math.min((p / currentGoal) * 100, 100).toFixed(1);
-            document.getElementById('p-bar').style.width = perc + "%";
-            document.getElementById('percent-text').innerText = perc + "%";
-        }
-
-        function render() {
-            const q = document.getElementById('search').value.toLowerCase();
-            const list = document.getElementById('list');
-            list.innerHTML = "";
-            const filtered = allData.filter(i => i.name.toLowerCase().includes(q) || i.state.toLowerCase().includes(q));
-            
-            filtered.slice(0, displayLimit).forEach(i => {
-                const div = document.createElement('div');
-                div.className = "item glass";
-                div.innerHTML = `
-                    <div><b>${i.name}</b> <br><small>${i.state} | ${i.date}</small></div>
-                    <div style="text-align:right">
-                        <span style="color:${i.status === 'Paid' ? '#22c55e' : '#fbbf24'}">₹${i.amt}</span><br>
-                        <small onclick="del(${i.id})" style="color:#f87171; cursor:pointer">Delete</small>
-                    </div>
-                `;
-                list.appendChild(div);
-            });
-        }
-
-        const obs = new IntersectionObserver(ent => { if(ent[0].isIntersecting && displayLimit < allData.length) { displayLimit += 15; render(); } });
-        obs.observe(document.getElementById('observer-trigger'));
-
-        function del(id) { if(confirm("Remove this record?")) { db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; } }
-        function clear() { ['cName','cState','cAmt'].forEach(id => document.getElementById(id).value = ""); }
-        function exportData() {
-            const blob = new Blob([JSON.stringify(allData)], {type: 'application/json'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `Nexa_Founder_Backup.json`; a.click();
-        }
-        function importData(e) {
-            const reader = new FileReader();
-            reader.onload = ev => {
-                const data = JSON.parse(ev.target.result);
-                const tx = db.transaction("sales", "readwrite");
-                data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-                tx.oncomplete = load;
-            };
-            reader.readAsText(e.target.files[0]);
-        }
-        setInterval(() => document.getElementById('live-time').innerText = new Date().toLocaleString(), 1000);
-    </script>
+    function setGoal() { let g = prompt("Set Target (₹):", goal); if(g) { goal = g; localStorage.setItem('nexaGoal', g); updateStats(); } }
+    function resetForm() { 
+        ['editId','cName','cAddr','cPhone','cAmt'].forEach(id => document.getElementById(id).value = "");
+        document.getElementById('addBtn').innerText = "Save Entry 🚀";
+        document.getElementById('cDate').valueAsDate = new Date();
+    }
+</script>
 </body>
-</html>
+    </html>
+        
