@@ -9,155 +9,141 @@
     <style>
         :root { --p: #0ea5e9; --bg: #f8fafc; --text: #1e293b; --glass: rgba(255,255,255,0.95); --wa: #25d366; }
         * { box-sizing: border-box; font-family: 'Segoe UI', system-ui; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text); padding: 15px; padding-bottom: 80px; }
+        body { background: var(--bg); color: var(--text); padding: 10px; padding-bottom: 80px; overflow-x: hidden; }
 
-        .ceo-header { text-align: center; margin-bottom: 20px; padding: 25px 15px; border-radius: 20px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3); }
-        .ceo-name { font-size: 26px; font-weight: 800; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; }
-        .ceo-addr { font-size: 13px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; }
+        .ceo-header { text-align: center; margin-bottom: 15px; padding: 20px; border-radius: 15px; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: white; box-shadow: 0 8px 20px rgba(14, 165, 233, 0.25); }
+        .ceo-name { font-size: 24px; font-weight: 800; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; text-transform: uppercase; }
+        .ceo-addr { font-size: 12px; opacity: 0.9; border: none; background: transparent; color: white; text-align: center; width: 100%; outline: none; margin-top: 5px; }
 
-        .glass-card { background: var(--glass); border: 1px solid rgba(14, 165, 233, 0.15); border-radius: 18px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .prog-bg { background: rgba(255,255,255,0.3); height: 12px; border-radius: 6px; margin: 12px 0; overflow: hidden; }
-        .prog-fill { background: white; height: 100%; width: 0%; transition: 1s ease-in-out; }
+        .glass-card { background: var(--glass); border: 1px solid rgba(14, 165, 233, 0.15); border-radius: 15px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .prog-bg { background: rgba(255,255,255,0.3); height: 10px; border-radius: 5px; margin: 10px 0; overflow: hidden; }
+        .prog-fill { background: white; height: 100%; width: 0%; transition: 1s ease; }
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .full { grid-column: span 2; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: white; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; background: #fff; }
         
-        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 12px rgba(14,165,233,0.2); }
-        .wa-btn { background: var(--wa); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        .main-btn { width: 100%; background: var(--p); color: white; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 10px rgba(14,165,233,0.2); }
+        .wa-btn { background: var(--wa); color: white; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; margin-top: 5px; }
 
-        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #e2e8f0; height: 65px; z-index: 100; }
-        .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #94a3b8; }
+        .tab-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #e2e8f0; height: 60px; z-index: 1000; }
+        .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #94a3b8; }
         .tab.active { color: var(--p); border-top: 4px solid var(--p); background: #f0f9ff; }
 
-        .panel { display: none; }
+        .panel { display: none; animation: fadeIn 0.3s; }
         .panel.active { display: block; }
-        .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 15px 0; }
-        .action-btn { background: #f1f5f9; border: none; padding: 5px 10px; border-radius: 6px; font-size: 11px; margin-left: 5px; cursor: pointer; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .ledger-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 12px 0; }
+        .action-btn { background: #f1f5f9; border: none; padding: 5px 8px; border-radius: 5px; font-size: 11px; margin-left: 5px; }
     </style>
 </head>
 <body>
 
 <div class="ceo-header">
-    <input type="text" id="founderName" class="ceo-name" value="KHAGESH" oninput="saveCEO()">
-    <input type="text" id="founderAddr" class="ceo-addr" value="Delhi, India | Nexa AI Founder" oninput="saveCEO()">
+    <input type="text" id="fName" class="ceo-name" value="KHAGESH" oninput="saveC()">
+    <input type="text" id="fAddr" class="ceo-addr" value="Delhi, India | Founder Nexa AI" oninput="saveC()">
 </div>
 
-<div style="display:flex; gap:10px; margin-bottom:15px;">
-    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:12px; border-radius:10px; border:1px solid #ddd; background:white; font-size:12px; font-weight:bold;">📥 Restore</button>
-    <button onclick="exportPDF()" style="flex:1; padding:12px; border-radius:10px; border:none; background:#0f172a; color:white; font-size:12px; font-weight:bold;">📄 Export PDF</button>
+<div style="display:flex; gap:8px; margin-bottom:12px;">
+    <button onclick="document.getElementById('imp').click()" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd; background:white; font-size:11px; font-weight:bold;">📥 RESTORE</button>
+    <button onclick="exportProPDF()" style="flex:1; padding:10px; border-radius:10px; border:none; background:#0f172a; color:white; font-size:11px; font-weight:bold;">📄 DOWNLOAD PDF</button>
     <input type="file" id="imp" hidden onchange="importData(event)">
 </div>
 
 <div id="Home" class="panel active">
     <div class="glass-card" style="background: var(--p); color: white;">
-        <div style="display:flex; justify-content: space-between;">
-            <span>Target: <b id="goalVal">₹0</b></span>
-            <span id="percVal">0%</span>
+        <div style="display:flex; justify-content: space-between; font-size:13px;">
+            <span>Target: <b id="gVal">₹0</b></span>
+            <span id="pVal">0%</span>
         </div>
         <div class="prog-bg"><div id="pBar" class="prog-fill"></div></div>
-        <small onclick="setGoal()" style="cursor:pointer; opacity:0.8; font-size:11px;">Tap to set goal</small>
+        <small onclick="setG()" style="cursor:pointer; opacity:0.8; font-size:10px;">Set Monthly Goal</small>
     </div>
 
     <div class="glass-card">
-        <h4 style="margin-bottom:12px; color:var(--p)">Record New Sale</h4>
+        <h4 style="margin-bottom:10px; color:var(--p); font-size:15px;">New Sale Record</h4>
         <div class="form-grid">
             <input type="hidden" id="editId">
             <input type="text" id="cName" placeholder="Client Name" class="full">
-            <input type="text" id="cAddr" placeholder="Location">
-            <input type="text" id="cApp" placeholder="App Name (Doctor, Gym, etc.)">
-            <input type="tel" id="cPhone" placeholder="WhatsApp Number">
+            <input type="text" id="cLoc" placeholder="Location">
+            <input type="text" id="cApp" placeholder="App Name (Doctor, ERP, etc.)">
+            <input type="tel" id="cPhone" value="+91" placeholder="WhatsApp Number">
             <input type="number" id="cAmt" placeholder="Amount (₹)">
             <input type="date" id="cDate">
             <select id="cStatus" class="full">
                 <option value="Paid">Paid</option>
                 <option value="Pending">Pending</option>
             </select>
-            <button id="addBtn" class="main-btn full" onclick="saveEntry()">RECORD SALE 🚀</button>
+            <button id="addBtn" class="main-btn full" onclick="save()">RECORD SALE 🚀</button>
         </div>
     </div>
 </div>
 
 <div id="Ledger" class="panel">
     <div class="glass-card">
-        <input type="text" id="search" placeholder="Search records..." oninput="render()" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; margin-bottom:10px;">
+        <input type="text" id="search" placeholder="Search sales..." oninput="render()" style="width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px;">
         <div id="list"></div>
     </div>
 </div>
 
 <div class="tab-bar">
-    <div class="tab active" onclick="switchTab('Home', this)">HOME</div>
-    <div class="tab" onclick="switchTab('Ledger', this)">LEDGER</div>
+    <div class="tab active" onclick="tab('Home', this)">HOME</div>
+    <div class="tab" onclick="tab('Ledger', this)">LEDGER</div>
 </div>
 
 <script>
-    let db, allData = [], goal = localStorage.getItem('nexaGoal') || 50000;
+    let db, allData = [], goal = localStorage.getItem('nGoal') || 50000;
     
-    // Persistence Storage Request
-    async function requestPersistence() {
-        if (navigator.storage && navigator.storage.persist) {
-            const isPersisted = await navigator.storage.persist();
-            console.log(`Storage Persisted: ${isPersisted}`);
-        }
-    }
-    requestPersistence();
+    // CEO & Persistence Setup
+    document.getElementById('fName').value = localStorage.getItem('cN') || "KHAGESH";
+    document.getElementById('fAddr').value = localStorage.getItem('cA') || "Delhi, India | Founder Nexa AI";
+    function saveC(){ localStorage.setItem('cN', document.getElementById('fName').value); localStorage.setItem('cA', document.getElementById('fAddr').value); }
+    if(navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
-    document.getElementById('founderName').value = localStorage.getItem('ceoName') || "KHAGESH";
-    document.getElementById('founderAddr').value = localStorage.getItem('ceoAddr') || "Delhi, India | Nexa AI Founder";
-    
-    function saveCEO() {
-        localStorage.setItem('ceoName', document.getElementById('founderName').value);
-        localStorage.setItem('ceoAddr', document.getElementById('founderAddr').value);
-    }
-
-    // Permanent Database Name
+    // Permanent DB Connection
     const req = indexedDB.open("Nexa_CEO_Permanent_DB", 1);
-    req.onupgradeneeded = e => {
-        let dbRef = e.target.result;
-        if (!dbRef.objectStoreNames.contains("sales")) {
-            dbRef.createObjectStore("sales", {keyPath: "id", autoIncrement: true});
-        }
-    };
+    req.onupgradeneeded = e => e.target.result.createObjectStore("sales", {keyPath:"id", autoIncrement:true});
     req.onsuccess = e => { db = e.target.result; load(); };
 
-    function switchTab(id, el) {
+    function tab(id, el) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
     }
 
-    function saveEntry() {
+    function save() {
         const id = document.getElementById('editId').value;
         const data = {
             name: document.getElementById('cName').value,
-            addr: document.getElementById('cAddr').value,
-            app: document.getElementById('cApp').value || 'Nexa ERP',
+            addr: document.getElementById('cLoc').value,
+            app: document.getElementById('cApp').value || 'Nexa App',
             phone: document.getElementById('cPhone').value,
             amt: parseFloat(document.getElementById('cAmt').value) || 0,
             date: document.getElementById('cDate').value,
             status: document.getElementById('cStatus').value
         };
-        if(!data.name) return alert("Enter Name");
+        if(!data.name || data.phone === "+91") return alert("Fill Name & Phone!");
         const tx = db.transaction("sales", "readwrite");
-        const store = tx.objectStore("sales");
-        if(id) { data.id = parseInt(id); store.put(data); } else { store.add(data); }
-        tx.oncomplete = () => { load(); resetForm(); };
+        if(id) { data.id = parseInt(id); tx.objectStore("sales").put(data); } 
+        else { tx.objectStore("sales").add(data); }
+        tx.oncomplete = () => { load(); reset(); };
     }
 
     function load() {
         db.transaction("sales").objectStore("sales").getAll().onsuccess = e => {
             allData = e.target.result.reverse();
-            render(); updateStats();
+            render(); stats();
         };
     }
 
-    function updateStats() {
+    function stats() {
         let p = 0; allData.forEach(i => { if(i.status === 'Paid') p += i.amt; });
-        document.getElementById('goalVal').innerText = `₹${goal}`;
+        document.getElementById('gVal').innerText = `₹${goal}`;
         let perc = Math.min((p / goal) * 100, 100).toFixed(1);
         document.getElementById('pBar').style.width = perc + "%";
-        document.getElementById('percVal').innerText = perc + "%";
+        document.getElementById('pVal').innerText = perc + "%";
     }
 
     function render() {
@@ -171,71 +157,69 @@
                 <div>
                     <b>${i.name}</b> <small>(${i.app})</small><br>
                     <small style="color:#64748b">${i.addr} | ${i.date}</small><br>
-                    <button class="wa-btn" onclick="sendWA(${i.id})">💬 Follow-up</button>
+                    <button class="wa-btn" onclick="wa(${i.id})">💬 WhatsApp</button>
                 </div>
                 <div style="text-align:right">
                     <span style="color:${i.status==='Paid'?'#16a34a':'#d97706'}; font-weight:700;">₹${i.amt}</span><br>
-                    <button class="action-btn" onclick="editRec(${i.id})">Edit</button>
-                    <button class="action-btn" style="color:red" onclick="delRec(${i.id})">X</button>
+                    <button class="action-btn" onclick="edit(${i.id})">Edit</button>
+                    <button class="action-btn" style="color:red" onclick="del(${i.id})">X</button>
                 </div>`;
             list.appendChild(div);
         });
     }
 
-    function sendWA(id) {
+    function wa(id) {
         const i = allData.find(x => x.id === id);
         const msg = i.status === 'Paid' 
-            ? `Hello ${i.name}, Nexa AI ki taraf se ${i.app} ke liye ₹${i.amt} payment receive ho gayi hai. Thank you!` 
-            : `Hello ${i.name}, Nexa AI reminder: Aapki ${i.app} ki payment ₹${i.amt} pending hai. Kripya ise jald process karein.`;
-        window.open(`https://wa.me/${i.phone}?text=${encodeURIComponent(msg)}`);
+            ? `Hello ${i.name}, Nexa AI ki taraf se ${i.app} ke liye ₹${i.amt} receive ho gayi hai. Thanks!` 
+            : `Hello ${i.name}, Reminder from Nexa AI: Aapki ${i.app} ki payment ₹${i.amt} pending hai. Kripya process karein.`;
+        window.open(`https://wa.me/${i.phone.replace('+','')}/?text=${encodeURIComponent(msg)}`);
     }
 
-    function editRec(id) {
+    function edit(id) {
         const item = allData.find(i => i.id === id);
         document.getElementById('editId').value = item.id;
         document.getElementById('cName').value = item.name;
-        document.getElementById('cAddr').value = item.addr;
+        document.getElementById('cLoc').value = item.addr;
         document.getElementById('cApp').value = item.app;
         document.getElementById('cPhone').value = item.phone;
         document.getElementById('cAmt').value = item.amt;
         document.getElementById('cDate').value = item.date;
         document.getElementById('cStatus').value = item.status;
-        document.getElementById('addBtn').innerText = "UPDATE ENTRY ⚡";
-        switchTab('Home', document.querySelectorAll('.tab')[0]);
+        document.getElementById('addBtn').innerText = "UPDATE RECORD ⚡";
+        tab('Home', document.querySelectorAll('.tab')[0]);
     }
 
-    function delRec(id) { if(confirm("Delete this?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
+    function del(id) { if(confirm("Delete?")) db.transaction("sales","readwrite").objectStore("sales").delete(id).oncomplete = load; }
 
-    function exportPDF() {
-        if (typeof window.jspdf === 'undefined') {
-            alert("PDF library loading... please try again in 2 seconds.");
-            return;
-        }
+    function exportProPDF() {
+        if (!window.jspdf) return alert("Library Loading... Try again.");
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
-        const fName = document.getElementById('founderName').value;
-        const fAddr = document.getElementById('founderAddr').value;
+        const fN = document.getElementById('fName').value;
+        const fA = document.getElementById('fAddr').value;
 
-        doc.setFontSize(22); doc.setTextColor(2, 132, 199); doc.text(fName, 14, 20);
-        doc.setFontSize(10); doc.setTextColor(100); doc.text(fAddr, 14, 26);
+        doc.setFontSize(22); doc.setTextColor(2, 132, 199); doc.text(fN, 14, 20);
+        doc.setFontSize(10); doc.setTextColor(100); doc.text(fA, 14, 26);
         doc.line(14, 30, 196, 30);
 
-        let total = 0;
-        const rows = allData.map(i => {
-            if(i.status === 'Paid') total += i.amt;
+        let earned = 0;
+        const body = allData.map(i => {
+            if(i.status === 'Paid') earned += i.amt;
             return [i.date, i.name, i.addr, i.app, i.status, `Rs. ${i.amt}`];
         });
 
         doc.autoTable({
             startY: 40,
-            head: [['Date', 'Client', 'Location', 'App', 'Status', 'Amount']],
-            body: rows,
-            headStyles: { fillColor: [2, 132, 199] }
+            head: [['Date', 'Client', 'Location', 'App Name', 'Status', 'Amount']],
+            body: body,
+            headStyles: { fillColor: [2, 132, 199] },
+            theme: 'striped'
         });
 
         doc.setFontSize(14); doc.setTextColor(22, 163, 74);
-        doc.text(`GRAND TOTAL (EARNED): Rs. ${total}`, 14, doc.lastAutoTable.finalY + 15);
-        doc.save(`${fName}_Nexa_Audit.pdf`);
+        doc.text(`GRAND TOTAL (EARNED): Rs. ${earned}`, 14, doc.lastAutoTable.finalY + 15);
+        doc.save(`${fN}_Statement.pdf`);
     }
 
     function importData(e) {
@@ -244,15 +228,15 @@
             const data = JSON.parse(ev.target.result);
             const tx = db.transaction("sales", "readwrite");
             data.forEach(i => { delete i.id; tx.objectStore("sales").add(i); });
-            tx.oncomplete = load;
-            alert("Data Restored Successfully!");
+            tx.oncomplete = () => { load(); alert("Import Done!"); };
         };
         reader.readAsText(e.target.files[0]);
     }
 
-    function setGoal() { let g = prompt("Target (₹):", goal); if(g) { goal = g; localStorage.setItem('nexaGoal', g); updateStats(); } }
-    function resetForm() { 
-        ['editId','cName','cAddr','cApp','cPhone','cAmt'].forEach(id => document.getElementById(id).value = "");
+    function setG() { let g = prompt("Goal (₹):", goal); if(g) { goal = g; localStorage.setItem('nGoal', g); stats(); } }
+    function reset() { 
+        ['editId','cName','cLoc','cApp','cAmt'].forEach(id => document.getElementById(id).value = "");
+        document.getElementById('cPhone').value = "+91";
         document.getElementById('addBtn').innerText = "RECORD SALE 🚀";
         document.getElementById('cDate').valueAsDate = new Date();
     }
